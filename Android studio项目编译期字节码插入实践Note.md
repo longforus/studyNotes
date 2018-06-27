@@ -17,39 +17,43 @@
 ###自定义一个plugin:
    1. 新建一个module，选择library module，module名字必须叫BuildSrc 
    2. 删除module下的所有文件，除了build.gradle，替换build.gradle中的内容 
-    ```
-    apply plugin: 'groovy'
-    
-    repositories {
-      jcenter()
-    }
-    
-    dependencies {
-      compile gradleApi()
-      compile 'com.android.tools.build:gradle:2.3.3'
-      compile 'org.javassist:javassist:3.20.0-GA'
-    }
+~~~groovy
+```
+apply plugin: 'groovy'
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+  compile gradleApi()
+  compile 'com.android.tools.build:gradle:2.3.3'
+  compile 'org.javassist:javassist:3.20.0-GA'
+}
+~~~
    ```
    3. 然后新建以下目录 src-main-groovy，同步
    4.  这时候就可以像普通module一样新建package和类了，不过这里的类是以groovy结尾，新建类的时候选择file，并且以.groovy作为后缀。
-    ```
-    package com.longforus
-    
-    import com.android.build.gradle.AppExtension
-    import org.gradle.api.Plugin
-    import org.gradle.api.Project
+   ```
+```groovy
+package com.longforus
+
+import com.android.build.gradle.AppExtension
+import org.gradle.api.Plugin
+import org.gradle.api.Project
    
-    public class TestPlugin implements Plugin<Project> {
-      @Override
-      public void apply(Project project) {
-        project.logger.error "================自定义插件成功！=========="
-        def android = project.extensions.findByType(AppExtension.class)
-        android.registerTransform(new PreDexTransform(project))//调用自定义的transform进行
-      }
-    }
+public class TestPlugin implements Plugin<Project> {
+  @Override
+  public void apply(Project project) {
+    project.logger.error "================自定义插件成功！=========="
+    def android = project.extensions.findByType(AppExtension.class)
+    android.registerTransform(new PreDexTransform(project))//调用自定义的transform进行
+  }
+}
+```
   ```
    5.在app module下的buiil.gradle中添apply 插件 
-   ```
+  ```
    import com.longforus.TestPlugin
 apply plugin: 'com.android.application'
 apply plugin: TestPlugin//应用插件
@@ -61,7 +65,7 @@ apply plugin: TestPlugin//应用插件
 ### 自定义Transfrom
 新建一个groovy继承Transfrom，注意这个Transfrom是要com.android.build.api.transform.Transform这个包的
 代码如下:
-```
+  ```
 package com.longforus
 
 import com.android.build.api.transform.*
@@ -110,26 +114,26 @@ public class PreDexTransform extends Transform {
 
     // inputs就是输入文件的集合
     // outputProvider可以获取outputs的路径
-
+    
     // Transfrom的inputs有两种类型，一种是目录，一种是jar包，要分开遍历
-
+    
     inputs.each { TransformInput input ->
-
+    
       input.directoryInputs.each { DirectoryInput directoryInput ->
-
+    
         //TODO 这里可以对input的文件做处理，比如代码注入！
         Inject.injectDir(directoryInput.file.absolutePath)//调用方法进行注入
         // 获取output目录
         def dest = outputProvider.getContentLocation(directoryInput.name,
             directoryInput.contentTypes, directoryInput.scopes, Format.DIRECTORY)
-
+    
         // 将input的目录复制到output指定目录
         FileUtils.copyDirectory(directoryInput.file, dest)
       }
-
+    
       input.jarInputs.each { JarInput jarInput ->
         //TODO 这里可以对input的文件做处理，比如代码注入！
-
+    
         String jarPath = jarInput.file.absolutePath;
         String projectName = project.rootProject.name;
         if(jarPath.endsWith("classes.jar")
@@ -258,13 +262,13 @@ public class Inject {
 
             // jar包解压后的保存路径
             String jarZipDir = jarFile.getParent() + "/" + jarFile.getName().replace('.jar', '')
-
+    
             // 解压jar包, 返回jar包中所有class的完整类名的集合（带.class后缀）
             List classNameList = JarZipUtil.unzipJar(path, jarZipDir)
-
+    
             // 删除原来的jar包
             jarFile.delete()
-
+    
             // 注入代码
             pool.appendClassPath(jarZipDir)
             for (String className : classNameList) {
@@ -276,10 +280,10 @@ public class Inject {
                     injectClass(className, jarZipDir)
                 }
             }
-
+    
             // 从新打包jar
             JarZipUtil.zipJar(jarZipDir, path)
-
+    
             // 删除目录
             FileUtils.deleteDirectory(new File(jarZipDir))
         }
@@ -304,7 +308,7 @@ public class Inject {
             }
         }
         /*CtConstructor[] cts = c.getDeclaredConstructors()
-
+    
         if (cts == null || cts.length == 0) {
             insertNewConstructor(c)
         } else {
@@ -411,3 +415,4 @@ pause>nul
   [2]: http://blog.csdn.net/u010386612/article/details/51131642
   [3]: http://blog.csdn.net/u010386612/article/details/51131642
   [4]: http://blog.csdn.net/ceabie/article/details/55271161
+```
