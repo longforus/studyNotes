@@ -35,7 +35,6 @@ Manager是Employee的子类.
   ```
   **直观地讲，带有超类型限定的通配符可以向泛型对象写人，带有子类型限定的通配符可以从泛型对象读取。** 
 
-
 ## Other
 
 - 默认方法
@@ -59,7 +58,130 @@ Manager是Employee的子类.
   }
   ```
 
-  ​
+
+## 多线程
+
+### ReentrantLock
+
+重入锁是可以重新取得锁并执行的锁,比`synchronized`更加灵活.
+
+```java
+public class Alipay {
+    private double[] accounts;
+    private ReentrantLock mLock;
+    private Condition mCondition;
+
+    public Alipay(int size,double initMoney) {
+        accounts = new double[size];
+        mLock = new ReentrantLock();
+        //创建重入条件
+        mCondition = mLock.newCondition();
+        for (int i = 0; i < size; i++) {
+            accounts[i] = initMoney;
+        }
+    }
+
+    public void transfer(int from,int to,double money) throws InterruptedException{
+        mLock.lock();//获得锁
+        System.out.println(Thread.currentThread().getName()+" enter");
+        try {
+            while (accounts[from] < money) {
+                System.out.println("accounts[from] < money await "+Thread.currentThread().getName());
+                //条件不达到,阻塞当前线程,并放弃锁
+                mCondition.await();
+            }
+            accounts[from] -= money;
+            accounts[to] += money;
+            System.out.println("success form = "+accounts[from]+" "+Thread.currentThread().getName());
+            System.out.println("success to = "+accounts[to]+" "+Thread.currentThread().getName());
+            //解除等待线程的阻塞， 以便这些线程能
+            //够在当前线程退出同步方法后， 通过竞争实现对对象的访问
+            mCondition.signalAll();
+        }finally {
+            System.out.println(Thread.currentThread().getName()+" exit");
+            mLock.unlock();//在这里释放锁是必须的,防止运行中出现异常没有放弃锁,导致死锁.
+        }
+    }
+
+      public synchronized void transferV2(int from, int to, double money) throws InterruptedException {
+        System.out.println(Thread.currentThread().getName() + " enter");
+        while (accounts[from] < money) {
+            System.out.println("accounts[from] < money await " + Thread.currentThread().getName());
+            //条件不达到,阻塞当前线程,并放弃锁
+            wait();
+        }
+        accounts[from] -= money;
+        accounts[to] += money;
+        System.out.println("success form = " + accounts[from] + " " + Thread.currentThread().getName());
+        System.out.println("success to = " + accounts[to] + " " + Thread.currentThread().getName());
+        //通知其他等待线程
+        notifyAll();
+        System.out.println(Thread.currentThread().getName() + " exit");
+    }
+    
+     public void transferV3(int from, int to, double money) throws InterruptedException {
+        synchronized (oLock) {
+            System.out.println(Thread.currentThread().getName() + " enter");
+            while (accounts[from] < money) {
+                System.out.println("accounts[from] < money await " + Thread.currentThread().getName());
+                //条件不达到,阻塞当前线程,并放弃锁
+                oLock.wait();
+            }
+            accounts[from] -= money;
+            accounts[to] += money;
+            System.out.println("success form = " + accounts[from] + " " + Thread.currentThread().getName());
+            System.out.println("success to = " + accounts[to] + " " + Thread.currentThread().getName());
+            //唤醒使用这个锁wait的其他线程
+            oLock.notifyAll();
+            System.out.println(Thread.currentThread().getName() + " exit");
+        }
+    }
+    
+    public static void main(String... args) {
+        Alipay alipay = new Alipay(10, 500);
+        Thread t1 = new Thread(() -> {
+            try {
+                alipay.transfer(0,1,600);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }, "t1");
+        Thread t2 = new Thread(() -> {
+            try {
+                alipay.transfer(3,0,200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }, "t2");
+
+        t1.start();
+        //延迟启动t2,凸显等待效果.
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        t2.start();
+    }
+}
+
+```
+
+运行结果:
+
+```
+t1 enter
+accounts[from] < money await t1 //条件满足t1阻塞并且放弃了锁
+t2 enter //t2获得了锁
+success form = 300.0 t2
+success to = 700.0 t2  //t2通过条件取消了这个条件的阻塞线程的阻塞
+t2 exit
+success form = 100.0 t1 //t1取得锁判断条件成立,继续执行
+success to = 1100.0 t1
+t1 exit
+```
+
+
 
 ## Useful Code
 
@@ -102,5 +224,3 @@ Manager是Employee的子类.
   int b = a<<1;//等于*2
   int c = b>>1;//等于/2
   ```
-
-  
