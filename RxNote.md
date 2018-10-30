@@ -29,6 +29,7 @@ Observable.create({ e: ObservableEmitter<Int>? ->//发送的int
 	})
 ```
 ## flatMap
+
 将一个发送事件的上游Observable变换为多个发送事件的Observables，然后将它们发射的事件合并后放进一个单独的Observable里.
 **事件是无序的,需要严格有序的话使用 concatMap**
 
@@ -62,7 +63,15 @@ Observable.create({ e: ObservableEmitter<Int>? ->//发送的int
 				println("complete")
 			})
 ```
+相对于map来说(设转化后的结果为T):
+
+-   发送的结果不一样.map直接发送T,flatmap发送Observable<T>.
+-   如果T是集合,flatmap使用just或者from发送,下游每次接收到的是T[i],而map接收到的是T[]还需要for遍历.
+-   map适用于一对一转换，当然也可以配合flatmap进行适用
+    flatmap适用于一对多，多对多的场景
+
 ## zip
+
 按照发送顺序把2个被观察者发送的数据组合成一个新的被观察者发送
 ​        
 
@@ -110,11 +119,48 @@ Observable.create({ e: ObservableEmitter<Int>? ->//发送的int
      })
 ```
 ## sample
+
 每隔多少时间进行一次取样,取得的value将发送给下游的观察者
 
 ```kotlin
 	.sample(2,TimeUnit.SECONDS,Schedulers.io())//取样 指定间隔时间和线程
 ```
+
+## buffer
+
+缓存上游发射的数据达到缓存数量后组成list发射,类似的有window,window发射的是Observable,订阅这个Observable后连续发射n个数据.
+
+```kotlin
+Observable.just(1,2,3,4,5).buffer(2).subscribe {
+        println(it)
+}
+--------------------
+[1, 2]
+[3, 4]
+[5]
+```
+
+## groupBy
+
+按照返回元素的equlas对上游发射的元素进行分组后,每组生成一个Observable发射组内的数据.
+
+## concat
+
+把参数接收的源Observable<T>所有发射的元素合并,一个接一个没有交叉的发射.类似的merge,但是数据可能交叉.
+
+```kotlin
+val groupBy = Observable.just("A3","B1","C1", "B2", "A2", "C3").groupBy {
+    it[0]
+}
+//groupBy的类型为Observable<GroupedObservable<K, T>>,如果在后面直接.subscribe() 接收到是GroupedObservable<K, T>类型,用concat接收它发射的所有元素再发射,.subscribe()收到的就是K类型了
+Observable.concat(groupBy).subscribe {
+    println(it)
+}
+```
+
+## distinct
+
+去除重复元素,整个序列发射过的全部丢弃掉,distinctUntilChanged则只丢弃和上一个发射的元素一样的元素.
 
 # Flowable
 
@@ -221,3 +267,24 @@ interval操作符发送Long型的事件, 从0开始, 每隔指定的时间就把
 ### CompositeDisposable
 
 disposeable的容易可以装多个,在不需要再发生的时候执行clean方法,释放资源
+
+### 在标准的Java程序中怎么让observeOn运行在main Thread
+
+在安卓中可以使用RxAndroid回调到main thread中,但是标准的Java程序呢?`.observeOn(Schedulers.trampoline())`不会起作用,Observer的代码还是运行在Observable执行的线程中,要回调到main thread的方法是:
+
+```kotlin
+Observable.create<Response> {
+    println("before next "+Thread.currentThread())
+    it.onNext(onExecute(wrap))
+    it.onComplete()//必须调用onComplete()或者onError()后 阻塞处 之后的代码才会继续执行.
+}.subscribeOn(Schedulers.io()).blockingSubscribe(//main thread在这里被阻塞了
+    { resp ->
+        wrap._success(resp.body()!!.string())
+    },
+    { e ->
+        e.printStackTrace()
+        wrap._fail(e)
+    })
+//阻塞处        
+```
+
