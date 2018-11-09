@@ -1,11 +1,8 @@
-﻿# Gradle Note
-
-标签（空格分隔）： android Note
+# Gradle Note
 
 ---
-[TOC]
-
-##运行参数
+@[toc]
+## 运行参数
 - -q 不输出太多任务信息,只输入基本信息
 - -x 制定跳过任务
 
@@ -26,7 +23,7 @@
 ## Task
 
 ### 依赖
-``` groovy
+```groovy
 version = '1.0'
 task first{
     println 'first-configration' //doFirst 和doLast action 块之外的代码在task的配置阶段执行 ,每一次的任何task的执行都会触发配置代码的执行 
@@ -60,9 +57,9 @@ third.finalizedBy printVersion//printV被设为third的终结task ,third执行�
 //添加内部任务的依赖 写在android{} 之外,autoBuildPrepare任务的之后 ,这样内部的assembleRelease任务就会依赖与 //autoBuildPrepare,在它执行之后才会执行
 rootProject.task('assembleRelease').dependsOn autoBuildPrepare
 ```
-###输入输出
+### 输入输出
 定义task的输入和输出可以让gradle知道这个任务是否该执行,如果输入和输出没有改变的话,这个任务会被跳过,提高运行效率,任务被跳过时会显示:**up-to-date**,输入和输出可以是一个或多个文件,properties等
-```
+```groovy
 task makeReleaseVersion(group: 'versioning', description: 'Makes project a release version.') {
     inputs.property('release', version.release) //任务输入
     outputs.file versionFile//任务输入
@@ -76,7 +73,7 @@ task makeReleaseVersion(group: 'versioning', description: 'Makes project a relea
 }
 ```
 ### 增强task
-```
+```groovy
 task makeReleaseVersion(type: ReleaseVersionTask) {//指明这个task的父类型
     release = version.prodReady//为输入输出赋值
     destFile = new File('project-version.properties')
@@ -106,7 +103,7 @@ class ReleaseVersionTask extends DefaultTask {//继承自默认的task
 执行makeReleaseVersion这个task就会执行ReleaseVersionTask的action
 
 ### 获取task的输入和输出
-```
+```groovy
 task incrementVersion(group:'versioning',description:'longforus test'){
     inputs.property('version',version)
     outputs.file(versionFile)  
@@ -123,7 +120,7 @@ task incrementVersion(group:'versioning',description:'longforus test'){
 ```
 
 ### task的隐式依赖
-```
+```groovy
 task createDistribution(type: Zip, dependsOn: makeReleaseVersion) {//依赖到 makeReleaseVersion task
     from war.outputs.files//依赖到war task   所以这个任务会在war和makeReleaseVersion都执行完之后才执行
 
@@ -142,7 +139,7 @@ task backupReleaseDistribution(type: Copy) {
 }
 ```
 ### rule  规则声明
-```
+```groovy
 tasks.addRule("Pattern: increment<Classifier>Version – Increments the project version classifier.这里都是描述信息") { String taskName ->
     if (taskName.startsWith('increment') && taskName.endsWith('Version')) {//如果输入的taskName符合这个规则
         task(taskName) << {//动态插入一个doLast方法
@@ -169,9 +166,9 @@ tasks.addRule("Pattern: increment<Classifier>Version – Increments the project 
 ```
 相当于同时声明了incrementMajorVersion incrementMinorVersion 这2个任务,根据任务名执行不同的操作.可以直接执行这2个任务,as中的不同flavor构建的一系列任务可能就是这么做的.
 
-
 ### 生命周期hook
-```
+
+```groovy
 //对生命周期进行hook 插入操作
 gradle.taskGraph.whenReady { TaskExecutionGraph taskGraph ->
 //这里的代码在taskGraph准备好的时候被调用
@@ -199,7 +196,7 @@ task createDistribution(type: Zip) {//相比前面的代码这里没有 依赖�
 ```
 
 ### Listener
-```
+```groovy
 class ReleaseVersionListener implements TaskExecutionGraphListener {//实现Listener接口
     final static String listenTaskPath = ':release'
     @Override
@@ -223,46 +220,56 @@ gradle.taskGraph.addTaskExecutionGraphListener(new ReleaseVersionListener())//�
 
 
 
-##依赖管理
-###自定义依赖配置
-    configurations {
-    cargo {//自定义配置 默认就是complier
-        description = 'Classpath for Cargo Ant tasks.'
-        visible = false
-     }
-    }
-###排除某个
-    dependencies {
-        cargo('org.codehaus.cargo:cargo-ant:1.3.1') {//排除这个依赖下的子依赖
-            exclude group: 'xml-apis', module: 'xml-apis'
-        }
-        cargo 'xml-apis:xml-apis:2.0.2'//单独另外指定版本
-    }
+## 依赖管理
 
-###排除所有
-    dependencies {
-    cargo('org.codehaus.cargo:cargo-ant:1.3.1') {//注意和下面的不同,依赖信息要加上括号
-        transitive = false //排除这个依赖的所有传递性依赖
+### 自定义依赖配置
+```groovy
+configurations {
+cargo {//自定义配置 默认就是complier
+    description = 'Classpath for Cargo Ant tasks.'
+    visible = false
+ }
+}
+```
+### 排除某个
+
+```groovy
+dependencies {
+    cargo('org.codehaus.cargo:cargo-ant:1.3.1') {//排除这个依赖下的子依赖
+        exclude group: 'xml-apis', module: 'xml-apis'
     }
-    // Selectively declare required dependencies
-    cargo 'org.codehaus.cargo:cargo-core-uberjar:1.3.1'
-    }
-    
-###设置缓存策略
-    configurations.cargo.resolutionStrategy {
-    force "$cargoGroup:cargo-ant:1.3.0"//当依赖冲突时强制指定依赖版本
-    cacheDynamicVersionsFor 0,'seconds'//动态依赖版本0秒超时,总是获取最新的版本
-    cacheChangingModulesFor 0,'seconds'//缓存0秒超时,不缓存
-    }
-    
-##多项目构建
-###BuildSrc
+    cargo 'xml-apis:xml-apis:2.0.2'//单独另外指定版本
+}
+```
+
+### 排除所有
+```groovy
+dependencies {
+cargo('org.codehaus.cargo:cargo-ant:1.3.1') {//注意和下面的不同,依赖信息要加上括号
+    transitive = false //排除这个依赖的所有传递性依赖
+}
+// Selectively declare required dependencies
+cargo 'org.codehaus.cargo:cargo-core-uberjar:1.3.1'
+}
+```
+
+### 设置缓存策略
+```groovy
+configurations.cargo.resolutionStrategy {
+force "$cargoGroup:cargo-ant:1.3.0"//当依赖冲突时强制指定依赖版本
+cacheDynamicVersionsFor 0,'seconds'//动态依赖版本0秒超时,总是获取最新的版本
+cacheChangingModulesFor 0,'seconds'//缓存0秒超时,不缓存
+}
+```
+
+## 多项目构建
+### BuildSrc
 **如果把类放在buildSrc目录下就可以很轻松的在项目之间共享他们**,所以编写自定义插件放在buildSrc目录下就可以不用在:/resources/META-INF/gradle-plugins/com.fec.yunmall.buildplugin.properties文件下指定:
 
     implementation-class=com.fec.yunmall.buildplugin.AutoBuild
 插件名称了
-###顶级项目中
-```
+### 顶级项目中
+```groovy
 project(':model') {//在顶级项目中为指定的子项目添加操作
     group = projectIds.group
     version = projectIds.version
@@ -270,28 +277,32 @@ project(':model') {//在顶级项目中为指定的子项目添加操作
 }
 
 ```
-###同名任务
+### 同名任务
 在任意项目中定义同名的task,后在顶级项目目录下执行该task所有的同名task都会被执行.根项目的task最先被执行,然后子项目根据项目名称字母排序的顺序执行,和settings.gradle文件中的顺序没有关系.
 
-###跨项目的任务依赖
-    //跨项目的任务依赖 保证:repository:hello 任务比这个hello任务先执行
-        task hello(dependsOn: ':repository:hello') << {
-            println 'Hello from model project'
-        }
-        
-###公共行为定义
-    allprojects {//所有项目包括顶级项目
-        group = 'com.manning.gia'
-        version = '0.1'
+### 跨项目的任务依赖
+```groovy
+//跨项目的任务依赖 保证:repository:hello 任务比这个hello任务先执行
+    task hello(dependsOn: ':repository:hello') << {
+        println 'Hello from model project'
     }
-    
-    subprojects {//子项目
-        apply plugin: 'java'
-    }
-    
-###自定义子项目构建文件名
-settings.gradle
 ```
+
+### 公共行为定义
+```groovy
+allprojects {//所有项目包括顶级项目
+    group = 'com.manning.gia'
+    version = '0.1'
+}
+
+subprojects {//子项目
+    apply plugin: 'java'
+}
+```
+
+### 自定义子项目构建文件名
+settings.gradle
+```groovy
 include 'todo-model', 'todo-repository', 'todo-web'
 
 rootProject.name = 'todo' //指定根项目名称  
@@ -300,10 +311,10 @@ rootProject.children.each {//指定每个子项目的项目文件名 子项目�
     it.buildFileName = it.name + '.gradle' - 'todo-'//删除后为 model.gradle  子项目的构建文件叫这个名字就能被找到了  
 }
 ```
-##插件
-###脚本插件
+## 插件
+### 脚本插件
 - 定义:
-```
+```groovy
 buildscript {//可以定义单独的构建脚本
     repositories {
         mavenCentral()
@@ -331,12 +342,14 @@ BeesClient client = new BeesClient(apiUrl, apiKey, secret, 'xml', '1.0')
 ```
 - 使用:
 
-        apply from: 'cloudbees.gradle'//最后的文件名即为脚本插件名
-        apply from: "${rootProject.rootDir}/config.gradle"
-###对象插件
+    ```groovy
+    apply from: 'cloudbees.gradle'//最后的文件名即为脚本插件名
+    apply from: "${rootProject.rootDir}/config.gradle"
+    ```
+### 对象插件
 - 定义
-在/buildSrc/src/main/groovy/包名/目录下定义插件实现org.gradle.api.Plugin接口
-```
+  在/buildSrc/src/main/groovy/包名/目录下定义插件实现org.gradle.api.Plugin接口
+```groovy
 package com.manning.gia.plugins.cloudbees
 
 import org.gradle.api.Plugin
@@ -352,23 +365,24 @@ class CloudBeesPlugin implements Plugin<Project> {
 - 使用
 1. 如果是定义在/buildSrc/src/main/groovy/包名/目录下的可以直接使用全类名进行导入
 
-            apply plugin: com.manning.gia.plugins.cloudbees.CloudBeesPlugin 
-        
+          apply plugin: com.manning.gia.plugins.cloudbees.CloudBeesPlugin 
+
 2. 如果在\buildsrc\src\main\resources\META-INF\gradle-plugins\目录下定义了短插件名的,可以使用短插件名.
     定义方法:在该目录下创建 短插件名.properties,比如:com.fec.yunmall.buildplugin.properties
     内容为:
 
             implementation-class=com.fec.yunmall.buildplugin.AutoBuild//实现插件全类名
     使用时即可使用短插件名:
-            
+    ​        
+
              apply plugin: 'com.fec.yunmall.buildplugin'
 3. 使用打包好的(外部)插件的,需要在顶级build.gradle中声明classPath
 
-            classpath 'com.fec.yunmall:buildsrc:+'
-###插件扩展
+          classpath 'com.fec.yunmall:buildsrc:+'
+### 插件扩展
 - 定义
-在插件目录下定义bean:
-```
+  在插件目录下定义bean:
+```groovy
 package com.manning.gia.plugins.cloudbees
 
 class CloudBeesPluginExtension {
@@ -381,16 +395,18 @@ class CloudBeesPluginExtension {
 - 使用
 1. 在使用插件的地方添加扩展闭包:
 
-            apply plugin: com.manning.gia.plugins.cloudbees.CloudBeesPlugin
-    
-            cloudBees {//扩展闭包
-                apiUrl = 'https://api.cloudbees.com/api'
-                apiKey = project.apiKey
-                secret = project.secret
-                appId = 'gradle-in-action/todo'
-            }
+      ```groovy
+      apply plugin: com.manning.gia.plugins.cloudbees.CloudBeesPlugin
+      
+      cloudBees {//扩展闭包
+          apiUrl = 'https://api.cloudbees.com/api'
+          apiKey = project.apiKey
+          secret = project.secret
+          appId = 'gradle-in-action/todo'
+      }
+      ```
 2. 在插件中注册使用
-```
+```groovy
 package com.manning.gia.plugins.cloudbees
 
 class CloudBeesPlugin implements Plugin<Project> {
@@ -417,7 +433,7 @@ class CloudBeesPlugin implements Plugin<Project> {
 }
 ```
 另一个例子:
-```
+```groovy
 apply plugin: DateAndTimePlugin
 dateAndTime {//扩展闭包
     timeFormat = 'HH:mm:ss'
@@ -446,8 +462,8 @@ class DateAndTimePluginExtension {//定义bean
 
 ```
 ## 打包,上传
-###添加源码示例
-```
+### 添加源码示例
+```groovy
 apply plugin: 'maven'
 uploadArchives {
     repositories {
@@ -472,8 +488,8 @@ artifacts {
     archives androidSourcesJar//把源码jar任务的输出注册到生成工件列表中
 }
 ```
-###publish发布
-```
+### publish发布
+```groovy
 apply plugin: 'distribution'
 
 distributions {
@@ -548,9 +564,10 @@ publishPluginPublicationToRemoteArtifactoryRepository - Publishes Maven publicat
         }
     }
 ```
-##other
+## other
 ### properties文件的读写
-```
+
+```groovy
 ext.versionFile = file('version.properties')
 
 task loadProperties{
@@ -566,8 +583,8 @@ task loadProperties{
 }
 ```
 
-###Closure 闭包
-```
+### Closure 闭包
+```groovy
     void start() {
         withExceptionHandling {//这个闭包就像是lambda 这里的代码被放进闭包中
             BeesClient client = new BeesClient(apiUrl, apiKey, secret, apiFormat, apiVersion)
@@ -585,8 +602,8 @@ task loadProperties{
     }
 ```
 
-###执行命令行命令
-```
+### 执行命令行命令
+```groovy
 task testExec(type:Exec){
     def name =  System.properties['os.name'].toLowerCase()//获取操作系统类型
     println(name)
@@ -594,4 +611,32 @@ task testExec(type:Exec){
      commandLine 'cmd', '/c', 'ping 192.168.2.105 -t'
     }
 }
+```
+### manifest资源和BuildConfig资源定义
+- manifest
+```groovy
+//定义
+defaultConfig {
+        resValue "string","app_name", "longforus"//注意定义了的话,values里面就不能再有同名资源了
+        manifestPlaceholders = [WX_APPKEY  : weChatKey.toString()]
+    }
+ //使用
+   android:label="@string/app_name"
+   <data android:scheme="${WX_APPKEY}"/>
+```
+- BuildConfig
+```groovy
+//定义
+    buildTypes {
+        release {
+            buildConfigField "String", "WECHAT_APPKEY", "\"${weChatKey.toString()}\""//这里的""需要转义嵌套
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug{
+            buildConfigField "String", "WECHAT_APPKEY", "\"${weChatKey.toString()}\""
+        }
+    }
+ //代码中使用
+   mWxapi.registerApp(BuildConfig.WECHAT_APPKEY);
 ```
