@@ -1,6 +1,4 @@
-# Android模块化项目模块保存及持续集成方案
-
-## 分析
+## Android模块化项目模块版本控制及持续集成方案
 
 在使用模块化开发的过程中,模块的复用面临着同步的问题,既在A项目中修改了am模块,如何把修改同步到同样也在使用am模块的B项目中?在之前的模块化开发中这个问题是没有很好的解决的.在多个项目工程中通过复制,存在多份同一模块的实例.且分布在每个项目的svn仓库中,在某工程中修改am模块后只能通过拷贝的方法,把修改的代码复制到另一项目工程的am模块中,非常低效而且很容易出错.解决方案有2个:
 
@@ -87,3 +85,60 @@
 
 执行组件模块的`uploadArchives`即可完成构建上传.
 
+因为组件模块是工程中的子模块,需要工程级别的build.gradle文件的支持才能构建,上传后直接使用Jenkins构建是无法成功的.解决方法如下:
+
+1.  在模块级别的build.gradle文件中配置buildscript:
+
+    ```groovy
+    buildscript {
+        ext.kotlin_version = '1.2.60'
+        ext {
+            // App dependencies
+            supportLibraryVersion = '28.0.0'
+            compileSdkVersion = 28
+            buildToolsVersion = '28.0.3'
+            minSdkVersion = 16
+            targetSdkVersion = 22
+            guavaVersion = '18.0'
+            arouterApiVersion = '1.4.0'
+            arouterCompilerVersion = '1.2.1'
+            constraintLayoutVersion = '1.1.3'
+            butterknifeVersion = '8.5.1'
+            glideVersion = '4.8.0'
+            retrofitVersion = '2.3.0'
+            work_version = '1.0.0-alpha08'
+        }
+        repositories {
+            maven { url "http://192.168.2.39:8908/repository/maven-public/" }
+            dependencies {
+                classpath 'com.android.tools.build:gradle:3.1.3'
+                classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+            }
+        }
+    
+        allprojects {
+            repositories {
+                maven { url "http://192.168.2.39:8908/repository/maven-public/" }
+            }
+        }
+    }
+    ```
+
+​      缺点是每个模块都需要单独配置,代码冗余且统一的依赖版本管理形同虚设.
+
+2.  在Jenkins的服务器先创建Folder类型的项目,再在里面创建模块项目,形成层级:
+
+    ```
+    Project addresswheel
+    Full project name: baseModule/addresswheel
+    addresswheel
+    ```
+    手动在Jenkins服务器的`/home/jenkins-home/workspace/baseModule`目录下创建和工程目录下相同的工程级别build.gradle和settings.gradle文件并**在后续保持同步**.需要上传的话还要创建maven_upload.gradle
+
+3.  配置Jenkins的模块项目构建过程如下:
+
+    ![](Android模块化项目模块保存及持续集成方案.assets/module build setting.png)
+
+### ONEs集成
+
+没什么好说的,按官方流程吧.

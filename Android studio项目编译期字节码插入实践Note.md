@@ -9,16 +9,18 @@
 
 
 
-##实现
+## 实现
 通过添加一个gradle插件添加一个构建过程中的TransformTask : transformClassesWithPreDexForDebug在这个task中获取到已经生成的class文件,使用javassist进行字节码直接插入.
 
-##步骤
+## 步骤
+
 **几乎全部引用自AItsuki的[文章][3]**
-###自定义一个plugin:
+
+### 自定义一个plugin:
+
    1. 新建一个module，选择library module，module名字必须叫BuildSrc 
    2. 删除module下的所有文件，除了build.gradle，替换build.gradle中的内容 
-~~~groovy
-```
+```groovy
 apply plugin: 'groovy'
 
 repositories {
@@ -30,11 +32,10 @@ dependencies {
   compile 'com.android.tools.build:gradle:2.3.3'
   compile 'org.javassist:javassist:3.20.0-GA'
 }
-~~~
-   ```
+```
    3. 然后新建以下目录 src-main-groovy，同步
    4.  这时候就可以像普通module一样新建package和类了，不过这里的类是以groovy结尾，新建类的时候选择file，并且以.groovy作为后缀。
-   ```
+
 ```groovy
 package com.longforus
 
@@ -51,21 +52,23 @@ public class TestPlugin implements Plugin<Project> {
   }
 }
 ```
-  ```
    5.在app module下的buiil.gradle中添apply 插件 
-  ```
+```groovy
    import com.longforus.TestPlugin
 apply plugin: 'com.android.application'
 apply plugin: TestPlugin//应用插件
 ......
-  ```
+```
 *说明：如果plugin所在的module名不叫BuildSrc，这里是无法apply包名的，会提示找不到。所以之前也说明取名一定要叫buildsrc*
 运行一下项目就可以看到”================自定义插件成功！==========”这句话了 
 和gradle有关的输出都会显示在gradle console这个窗口中。 
+
 ### 自定义Transfrom
+
 新建一个groovy继承Transfrom，注意这个Transfrom是要com.android.build.api.transform.Transform这个包的
 代码如下:
-  ```
+
+  ```groovy
 package com.longforus
 
 import com.android.build.api.transform.*
@@ -160,11 +163,13 @@ public class PreDexTransform extends Transform {
     }
   }
 }
-```
+  ```
 Clean项目运行就可以,在获取inputs复制到outpus目录之前，对class注入代码.
-###查看inputs和ouputs
+### 查看inputs和ouputs
+
 在app module下的build.gradle的android节点中添加以下代码:
-```
+
+```groovy
     applicationVariants.all { variant->//输出  class文件的保存目录
             def dexTask = project.tasks.findByName("transformClassesWithDexForDebug")
             def preDexTask = project.tasks.findByName("transformClassesWithPreDexForDebug")
@@ -190,13 +195,15 @@ Clean项目运行就可以,在获取inputs复制到outpus目录之前，对class
 ```
 即可获取inputs和ouputs的目录我实际获取到的目录与原作者所说的不一样,可能是版本问题,未做深究.
 
-###使用javassist注入代码
+### 使用javassist注入代码
+
 * app module编译后class文件保存在debug目录，直接遍历这个目录使用javassist注入代码就行了
 * app module依赖的module，编译后会被打包成jar，放在exploded-aar这个目录，需要将jar包解压–遍历注入代码–重新打包成jar
 
 在插件中需要添加2个类,格式和上面的Transform一样:
 操作javassist注入代码的inject类:
-```
+
+```groovy
 import com.longforus.JarZipUtil
 import javassist.ClassPool
 import javassist.CtClass
@@ -262,13 +269,13 @@ public class Inject {
 
             // jar包解压后的保存路径
             String jarZipDir = jarFile.getParent() + "/" + jarFile.getName().replace('.jar', '')
-    
+            
             // 解压jar包, 返回jar包中所有class的完整类名的集合（带.class后缀）
             List classNameList = JarZipUtil.unzipJar(path, jarZipDir)
-    
+            
             // 删除原来的jar包
             jarFile.delete()
-    
+            
             // 注入代码
             pool.appendClassPath(jarZipDir)
             for (String className : classNameList) {
@@ -280,10 +287,10 @@ public class Inject {
                     injectClass(className, jarZipDir)
                 }
             }
-    
+            
             // 从新打包jar
             JarZipUtil.zipJar(jarZipDir, path)
-    
+            
             // 删除目录
             FileUtils.deleteDirectory(new File(jarZipDir))
         }
@@ -308,7 +315,7 @@ public class Inject {
             }
         }
         /*CtConstructor[] cts = c.getDeclaredConstructors()
-    
+        
         if (cts == null || cts.length == 0) {
             insertNewConstructor(c)
         } else {
@@ -328,7 +335,7 @@ public class Inject {
 ```
 
 解压缩jar包的类:
-```
+```groovy
 package com.longforus
 
 import java.util.jar.JarEntry
@@ -401,8 +408,9 @@ public class JarZipUtil {
 ```
 clean 再运行就能注入成功了.
 ### 插件的debug
+
 在上面的项目中我想要在插件的代码中打断点,方便调试,但是以前对插件都没有过多的了解,很单纯的和项目代码一样点上bug,就点击调试运行,结果的无法进入断点的.搜索资料加实践后成功进入断点,参考了[Intellij / Android Studio 调试 Gradle Plugin][4]这篇文章,在原文的基础上多次尝试,写了一个bat文件在需要断点调试时运行:
-```
+```powershell
 @rem 只有在clean之后才会进入断点
 call gradlew clean
 call gradlew assembleDebug -Dorg.gradle.daemon=false -Dorg.gradle.debug=true
@@ -411,8 +419,7 @@ pause>nul
 放在项目根目录下,打好断点->运行bat->点击远程任务的调试启动 即可进入断点.
 
 
-  [1]: http://www.jianshu.com/p/1b1d77f58e84
-  [2]: http://blog.csdn.net/u010386612/article/details/51131642
-  [3]: http://blog.csdn.net/u010386612/article/details/51131642
-  [4]: http://blog.csdn.net/ceabie/article/details/55271161
-```
+[1]: http://www.jianshu.com/p/1b1d77f58e84
+[2]: http://blog.csdn.net/u010386612/article/details/51131642
+[3]: http://blog.csdn.net/u010386612/article/details/51131642
+[4]: http://blog.csdn.net/ceabie/article/details/55271161
