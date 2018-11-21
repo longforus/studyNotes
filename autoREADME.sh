@@ -11,7 +11,7 @@ do
     if [[ $files =~ $suffix ]]; then
         echo $path
         name=${path:2:${#str}-3}
-        echo "[$name]($path)" >> README.md
+        echo "[$name](${path// /&nbsp;})" >> README.md
         path=""
     fi
 done
