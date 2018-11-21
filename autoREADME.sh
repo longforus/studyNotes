@@ -10,7 +10,7 @@ do
     fi
     if [[ $files =~ $suffix ]]; then
         echo $path
-        name=${path:2:${#str}-3}
+        name=${path:2:-3}
         echo -e "[$name](${path// /%20})\r\n" >> README.md
         path=""
     fi
