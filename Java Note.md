@@ -102,7 +102,10 @@ public class Alipay {
             mLock.unlock();//在这里释放锁是必须的,防止运行中出现异常没有放弃锁,导致死锁.
         }
     }
-
+	
+    /**
+    * 应该尽量使用synchronized 配合wait 和 notifyAll来实现同步,在一定需要ReentrantLock的时候才使用
+    */
       public synchronized void transferV2(int from, int to, double money) throws InterruptedException {
         System.out.println(Thread.currentThread().getName() + " enter");
         while (accounts[from] < money) {

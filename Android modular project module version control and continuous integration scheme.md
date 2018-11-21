@@ -83,6 +83,8 @@
 
 远程触发使用插件:[[GitLab Plugin](https://wiki.jenkins.io/display/JENKINS/GitLab+Plugin)],名字相关的都安装.
 
+安装[Android Emulator Plugin](http://wiki.jenkins-ci.org/display/JENKINS/Android+Emulator+Plugin),安装后可实现SDK自动下载.
+
 执行组件模块的`uploadArchives`即可完成构建上传.
 
 因为组件模块是工程中的子模块,需要工程级别的build.gradle文件的支持才能构建,上传后直接使用Jenkins构建是无法成功的.解决方法如下:
@@ -138,6 +140,16 @@
 3.  配置Jenkins的模块项目构建过程如下:
 
     ![](Android modular project module version control and continuous integration scheme.assets/module_build_setting.png)
+
+4.  设置构建结果描述和GitLab关联:
+
+    1.  安装插件:[description setter plugin](http://wiki.jenkins-ci.org/display/JENKINS/Description+Setter+Plugin)
+
+    2.  Configure Global Security->Markup Formatter 选择Safe HTML
+
+    3.  项目设置如下:
+
+        ![](Android modular project module version control and continuous integration scheme.assets/set_desc.png)
 
 ### ONEs集成
 

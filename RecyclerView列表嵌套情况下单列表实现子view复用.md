@@ -9,6 +9,7 @@
 2. 是只使用一个RecyclerView,在item的列表位置加入一个容器LinearLayout,inflate每个内部item add到容器中,这样做的话又存在过多的内部item inflate的问题,因为在外部item复用的时候每次都会inflate内部列表item个数的内部item view,毫无疑问这肯定是很耗时的.可能是高速滑动下造成卡顿.
 
 ## 思考
+
 试想在item内部使用RecyclerView的话也是为了内部item view的复用,但是在不同的外部item间,内部的item是否得到了复用呢?每个外部item的内部都有一个内部item的adapter,他们是互相隔离的,不能互相复用内部item的view,在内部list不能撑满整个屏幕的情况下,未必能实现内部item的复用.(猜想未测试)
 
 那么要是使用方法2,自行实现内部Item的复用是否可行呢?笔者进行了初步测试是可行的.构思如下:
@@ -20,7 +21,7 @@
 ## demo
 以上想法初步实现如下:
 ### adapter
-```
+```java
 public abstract class CacheSubRvAdapter<T> extends BaseRecyclerViewAdapter<T> {
     protected Queue<View> subViewQueue;
     public CacheSubRvAdapter(Activity context) {
@@ -62,7 +63,7 @@ public abstract class CacheSubRvAdapter<T> extends BaseRecyclerViewAdapter<T> {
 ```
 
 ### holder
-```
+```java
 public abstract class CacheSubHolder<ITEMBEAN,SUBBEAN> extends BaseHolder<ITEMBEAN> {
     protected Queue<View> subViewQueue;
     protected  View mFirstSub;
