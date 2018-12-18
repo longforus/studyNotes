@@ -363,6 +363,22 @@ class CloudBeesPlugin implements Plugin<Project> {
         addTasks(project)
     }
 }
+
+​`````````````````````build script
+apply plugin:'groovy'
+repositories {
+    google()
+    jcenter()
+}
+dependencies {
+    implementation 'com.android.tools.build:gradle:3.2.1'
+//    implementation group: 'org.javassist', name: 'javassist', version: '3.20.0-GA'
+    //gradle sdk
+//    implementation 'com.android.tools.build:gradle-api:3.1.4'
+    implementation gradleApi()
+    //groovy sdk
+    implementation localGroovy()
+}
 ```
 - 使用
 1. 如果是定义在/buildSrc/src/main/groovy/包名/目录下的可以直接使用全类名进行导入
@@ -373,11 +389,16 @@ class CloudBeesPlugin implements Plugin<Project> {
     定义方法:在该目录下创建 短插件名.properties,比如:com.fec.yunmall.buildplugin.properties
     内容为:
 
-            implementation-class=com.fec.yunmall.buildplugin.AutoBuild//实现插件全类名
+        implementation-class=com.fec.yunmall.buildplugin.AutoBuild//实现插件全类名
     使用时即可使用短插件名:
     ​        
 
-             apply plugin: 'com.fec.yunmall.buildplugin'
+    ```groovy
+    apply plugin: 'com.fec.yunmall.buildplugin'
+    ```
+
+    如果插件不是定义在buildSrc模块下的话,会提示找不到插件.
+
 3. 使用打包好的(外部)插件的,需要在顶级build.gradle中声明classPath
 
           classpath 'com.fec.yunmall:buildsrc:+'
@@ -428,10 +449,8 @@ class CloudBeesPlugin implements Plugin<Project> {
             conventionMapping.secret = { extension.secret }
             logger.quiet "2 secret = $extension.secret"//只有在task的执行阶段,这里才会有值
         }
-
         addAppTasks(project)
     }
-    
 }
 ```
 另一个例子:
@@ -615,6 +634,7 @@ task testExec(type:Exec){
 }
 ```
 ### manifest资源和BuildConfig资源定义
+
 - manifest
 ```groovy
 //定义
@@ -642,3 +662,67 @@ defaultConfig {
  //代码中使用
    mWxapi.registerApp(BuildConfig.WECHAT_APPKEY);
 ```
+
+### Transform
+
+`com.android.build.api.transform.Transform`是安卓构建过程中的一个class和assets文件的处理流,可以自定义Transform加入到处理的流程中.
+
+```groovy
+class ByteCodeProcessors implements Plugin<Project> {
+    @Override
+    void apply(Project project) {
+        AppExtension ext = project.getProperties().get('android')
+        ext.registerTransform(new TestTransform(project))
+    }
+}
+​``````````````````````
+class TestTransform extends Transform {
+    private Project mProject
+    TestTransform(Project mProject) {
+        this.mProject = mProject
+    }
+    @Override
+    String getName() {
+        return "TestTransform"
+    }
+    @Override
+    Set<QualifiedContent.ContentType> getInputTypes() {
+        return TransformManager.CONTENT_CLASS
+    }
+    @Override
+    Set<? super QualifiedContent.Scope> getScopes() {
+        return TransformManager.SCOPE_FULL_PROJECT
+    }
+    @Override
+    boolean isIncremental() {
+        return false
+    }
+    @Override
+    void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
+        super.transform(transformInvocation)
+        //是否增量编译
+        def incremental = transformInvocation.incremental
+        def inputs = transformInvocation.inputs
+        def referencedInputs = transformInvocation.referencedInputs
+        def provider = transformInvocation.outputProvider
+        inputs.forEach { input ->
+            input.jarInputs.forEach {
+                System.out.println(it.file.toString())
+                def destJar = provider.getContentLocation(it.file.absolutePath, it.contentTypes, it.scopes, Format.JAR)
+                //处理jar包后,输出
+                FileUtils.copyFile(it.file, destJar)
+            }
+            input.directoryInputs.forEach{
+                System.out.println(it.file.toString())
+            def destDir =  provider.getContentLocation(it.getName(),it.contentTypes,it.scopes,Format.DIRECTORY)
+                //处理非jar包的class后,输出
+                FileUtils.copyDirectory(it.file,destDir)
+            }
+        }
+    }
+}
+
+```
+
+
+
