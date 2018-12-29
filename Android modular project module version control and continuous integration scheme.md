@@ -118,7 +118,6 @@ buildscript {
             classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         }
     }
-
     allprojects {
         repositories {
             maven { url "http://192.168.2.39:8908/repository/maven-public/" }
@@ -136,7 +135,105 @@ buildscript {
     Full project name: baseModule/addresswheel
     addresswheel
     ```
-    手动在Jenkins服务器的`/home/jenkins-home/workspace/baseModule`目录下创建和工程目录下相同的工程级别build.gradle和settings.gradle文件并**在后续保持同步**.需要上传的话还要创建maven_upload.gradle
+    手动在Jenkins服务器的`/home/jenkins-home/workspace/baseModule`目录下创建和工程目录下相同的工程级别build.gradle和settings.gradle文件并**在后续保持同步**.需要上传的话还要创建maven_upload.gradle.
+
+    ```groovy
+    //build.gradle
+    // Top-level build file where you can add configuration options common to all sub-projects/modules.
+    buildscript {
+        ext.kotlin_version = '1.2.71'
+        ext {
+            // App dependencies
+            supportLibraryVersion = '28.0.0'
+            compileSdkVersion = 28
+            buildToolsVersion = '28.0.3'
+            minSdkVersion = 16
+            targetSdkVersion = 26
+            guavaVersion = '18.0'
+            arouterApiVersion = '1.4.0'
+            arouterCompilerVersion = '1.2.1'
+            constraintLayoutVersion = '1.1.3'
+            butterknifeVersion = '8.5.1'
+            glideVersion = '4.8.0'
+            retrofitVersion = '2.3.0'
+            work_version = '1.0.0-alpha08'
+        }
+        repositories {
+            maven { url "http://192.168.2.39:8908/repository/maven-public/" }
+    //        google()
+    //        jcenter()
+        }
+        dependencies {
+            classpath 'com.android.tools.build:gradle:3.2.1'
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        }
+    }
+    allprojects {
+        repositories {
+            maven { url "http://192.168.2.39:8908/repository/maven-public/" }
+    //        google()
+    //        jcenter()
+    //        mavenCentral()
+    //        maven { url "https://jitpack.io" }
+        }
+    }
+    task clean(type: Delete) {
+        delete rootProject.buildDir
+    }
+    
+    ```
+
+    ```groovy
+    //settings.gradle
+    //这里存在的问题是添加了一个子项目后,需要收到再到这里来添加,也可以编写一个shell来生成这个文件,在构建之前执行.
+    include 'addresswheel'
+    ```
+
+    ```groovy
+    //maven_upload.gradle
+    /*
+     * Copyright (c) 18-4-28 下午3:41. XQ Yang
+     */
+    apply plugin: 'maven'
+    uploadArchives {
+        doFirst {
+            logger.quiet("---------------------------start upload--------------------------------\t\n")
+            logger.quiet(String.format("groupId = %s\t\nartifactId = %s\t\nversion = %s\t\nuploadDesc = %s\t\n", GROUP, POM_ARTIFACT_ID, VERSION_CODE, UPLOAD_DESC))
+        }
+        doLast {
+            def ARTIFACT_URL = "http://192.168.2.39:8908/service/rest/repository/browse/${REPONAME}/${GROUP.toString().replaceAll("\\.", '/')}/${POM_ARTIFACT_ID}/${VERSION_CODE}/"
+            def ARTIFACT_ID = "${GROUP}:${POM_ARTIFACT_ID}:${VERSION_CODE}"
+            Runtime.getRuntime().exec("onespl artifact --name " + ARTIFACT_ID + " --env jenkins ${ARTIFACT_URL}")
+            //下面的输出是给description setter plugin插件捕获的
+            logger.quiet(
+                "[mavenPath]<p>Gradle Groovy DSL:<br/> api '$ARTIFACT_ID'<br/><a href=\"$ARTIFACT_URL\">$ARTIFACT_ID</a><br/>desc:$UPLOAD_DESC</p>")
+            logger.quiet("---------------------------upload finish--------------------------------")
+        }
+        def URL = "http://192.168.2.39:8908/repository/${REPONAME}/"
+        repositories {
+            mavenDeployer {
+                repository(url: URL) {
+                    authentication(userName: "void", password: "void")
+                }
+                pom.project {
+                    version VERSION_CODE
+                    artifactId POM_ARTIFACT_ID
+                    groupId GROUP
+                    description UPLOAD_DESC
+                }
+            }
+        }
+    }
+    task androidSourcesJar(type: Jar) {
+        group = 'jar'
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+    artifacts {
+        archives androidSourcesJar
+    }
+    ```
+
 
 #### 构建过程
 
