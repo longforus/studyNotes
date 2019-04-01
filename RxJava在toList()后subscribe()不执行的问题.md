@@ -46,7 +46,7 @@ Observable.create<Int> {
 
 上面的异步调用我进行了2次,获取到不同的值后,需要合并并发送到下游,下游接收到已经统一处理,notify adapter更新.实现这个功能可以使用`zip()`操作符,合并2个Observable并发送到下游,使用`.zipWith()`效果也是一样的.
 
-```
+```kotlin
 Observable.zip(countOb, msgOb, object : BiFunction<Int, Triple<String, String,String>, Ques> {
                 override fun apply(t1: Int, t2: Triple<String, String,String>): Ques {
                     bean.msgCount = t1
@@ -79,7 +79,7 @@ Observable.zip(countOb, msgOb, object : BiFunction<Int, Triple<String, String,St
 
 **后续的`subscribe()没有被调用,`toSortedList()`自身也没有被调用**,开始以为是线程切换的问题,删除线程切换后问题依旧,搜索后说是上游没有调用`onComplete()`,但是我的源头是使用的`fromIterable()`啊肯定是会调用`onComplete()`的,查看源码也证实了这一点,到这里就卡住了.
 
-我没有想到的是源头虽然调用了`onComplete()`,但是中游的`flatMap()`并没有调用啊,开始我一厢情愿的以为`fromIterable()`会跟着流一直传递,事实证明我想得太天真,对源码也没有深耕.想到这一点后**在中游的`flatMap()`加入`onComplete()`的调用**,问题就解决了.
+我没有想到的是源头虽然调用了`onComplete()`,但是中游的`flatMap()`并没有调用啊,开始我一厢情愿的以为`fromIterable()`的`onComplete()`事件会跟着流一直传递,事实证明我想得太天真,对源码也没有深耕.想到这一点后**在中游的`flatMap()`加入`onComplete()`的调用**,问题就解决了.
 
 最后的代码如下:
 
