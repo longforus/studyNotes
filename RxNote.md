@@ -34,7 +34,7 @@ Observable.create({ e: ObservableEmitter<Int>? ->//发送的int
 ```
 ## flatMap
 
-将一个发送事件的上游Observable变换为多个发送事件的Observables，然后将它们发射的事件合并后放进一个单独的Observable里.
+可以将一个发送事件的上游Observable变换为另外的Observables，这个转化的Observable的事件将被发送到下游.
 **事件是无序的,需要严格有序的话使用 concatMap**
 
 ```kotlin
