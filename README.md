@@ -39,3 +39,5 @@
 
 [Tinker热修复原理学习后的几点思考](./Tinker热修复原理学习后的几点思考.md)
 
+[如何使用Android Studio IDEA合并gitHub的pull request](./如何使用Android%20Studio%20IDEA合并gitHub的pull%20request.md)
+
