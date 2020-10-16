@@ -16,7 +16,7 @@
 
 便利程度自然不用多说,是我一直使用的重要插件之一.
 
-可是好景不长,前几天AS4.1正式版发布了,虽然新功能我不一定都用到,但是就算为了intellij本台的更新,所以我向来都是用最新版AS的,升级后一些插件报错了:
+可是好景不长,前几天AS4.1正式版发布了,虽然新功能我不一定都用到,但是就算为了intellij平台的更新,所以我向来都是用最新版AS的,升级后一些插件报错了:
 
 ```
 Plugin "Kotlin Code Sorter" is incompatible (supported only in IntelliJ IDEA).
@@ -27,6 +27,43 @@ Plugin "Android Drawable Preview" is incompatible (supported only in IntelliJ ID
 
 - **手动安装:**
   - 下载[`最新发布的插件包`][latest-release] > <kbd>File</kbd> ><kbd>Preferences(Settings)</kbd> > <kbd>Plugins</kbd> > <kbd>Install plugin from disk...</kbd>
+
+##### 其他相同问题的插件
+
+如果有其他插件也出现同样的问题,而作者还没有更新的话,可以尝试强行修改:
+
+1. 到`C:\Users\longforus\AppData\Roaming\Google\AndroidStudio4.1\plugins`目录下找到对应插件的jar包.
+
+2. 比如`C:\Users\longforus\AppData\Roaming\Google\AndroidStudio4.1\plugins\kotlincodesort\lib\kotlincodesort-1.2.2.jar`(这个是比如哈,我的插件已经更新了的)用压缩软件打开.
+
+3. 打开jar包内的`kotlincodesort-1.2.2.jar\META-INF\plugin.xml`:
+
+    ```xml
+    <idea-plugin>
+      <version>1.2.2</version>
+      <change-notes>
+          Adapter Android Studio 4.1
+          </change-notes>
+      <id>com.longforus.kotlincodesorter</id>
+      <name>Kotlin Code Sorter</name>
+      <vendor email="yxq.longforus@gmail.com" url="https://github.com/longforus">longforus</vendor>
+      <description>
+       	......
+        </description>
+      <idea-version since-build="192"/>
+      <depends>org.jetbrains.kotlin</depends>
+      <depends>com.intellij.modules.platform</depends>//添加这一行
+      <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable instance="com.longforus.kotlincodesorter.config.ConfigComponent"/>
+      </extensions>
+      <actions>
+    	......
+      </actions>
+    </idea-plugin>
+    
+    ```
+
+4. 保存,重启AS看是否能使用.**这种方法只适用于不涉及API改变的情况,如果插件有使用已经删除的API等情况的话,用起来也会报错的,不能保证后续功能的正常使用**,还是建议通知原作者更新.
 
 ##### 我其他的小插件:
 
