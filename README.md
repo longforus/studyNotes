@@ -1,53 +1,57 @@
 
 [adb Note](./adb%20Note.md)
 
+[Android Drawable Previewæ’ä»¶é€‚é…Android Studio4.1ç‰ˆ](./Android%20Drawable%20Previewæ’ä»¶é€‚é…Android%20Studio4.1ç‰ˆ.md)
+
 [Android modular project module version control and continuous integration scheme](./Android%20modular%20project%20module%20version%20control%20and%20continuous%20integration%20scheme.md)
 
-[Android studioÏîÄ¿±àÒëÆÚ×Ö½ÚÂë²åÈëÊµ¼ùNote](./Android%20studioÏîÄ¿±àÒëÆÚ×Ö½ÚÂë²åÈëÊµ¼ùNote.md)
+[Android studioé¡¹ç›®ç¼–è¯‘æœŸå­—èŠ‚ç æ’å…¥å®è·µNote](./Android%20studioé¡¹ç›®ç¼–è¯‘æœŸå­—èŠ‚ç æ’å…¥å®è·µNote.md)
 
-[Apt Note - ÊÖ¶¯ÊµÏÖ¼òÒ×°æButterknife](./Apt%20Note%20-%20ÊÖ¶¯ÊµÏÖ¼òÒ×°æButterknife.md)
+[Apt Note - æ‰‹åŠ¨å®ç°ç®€æ˜“ç‰ˆButterknife](./Apt%20Note%20-%20æ‰‹åŠ¨å®ç°ç®€æ˜“ç‰ˆButterknife.md)
 
-[ARouterÅäºÏFragment-Fetch fragment instance errorÒì³£µÄ´¦Àí](./ARouterÅäºÏFragment-Fetch%20fragment%20instance%20errorÒì³£µÄ´¦Àí.md)
+[ARouteré…åˆFragment-Fetch fragment instance errorå¼‚å¸¸çš„å¤„ç†](./ARouteré…åˆFragment-Fetch%20fragment%20instance%20errorå¼‚å¸¸çš„å¤„ç†.md)
 
 [Gradle Note](./Gradle%20Note.md)
 
 [Java Note](./Java%20Note.md)
 
-[KotlinµÄinline noinline±Ê¼Ç](./KotlinµÄinline%20noinline±Ê¼Ç.md)
+[Kotlinçš„inline noinlineç¬”è®°](./Kotlinçš„inline%20noinlineç¬”è®°.md)
 
-[Mars Android ½ÓÈëÊµ¼ùNote](./Mars%20Android%20½ÓÈëÊµ¼ùNote.md)
+[Mars Android æ¥å…¥å®è·µNote](./Mars%20Android%20æ¥å…¥å®è·µNote.md)
 
 [README](./README.md)
 
-[RecyclerViewÁĞ±íÇ¶Ì×Çé¿öÏÂµ¥ÁĞ±íÊµÏÖ×Óview¸´ÓÃ](./RecyclerViewÁĞ±íÇ¶Ì×Çé¿öÏÂµ¥ÁĞ±íÊµÏÖ×Óview¸´ÓÃ.md)
+[RecyclerViewåˆ—è¡¨åµŒå¥—æƒ…å†µä¸‹å•åˆ—è¡¨å®ç°å­viewå¤ç”¨](./RecyclerViewåˆ—è¡¨åµŒå¥—æƒ…å†µä¸‹å•åˆ—è¡¨å®ç°å­viewå¤ç”¨.md)
 
-[RecyclerViewµÄitemÖĞÇ¶Ì×ScrollviewµÄ»¬¶¯³åÍ»½â¾ö](./RecyclerViewµÄitemÖĞÇ¶Ì×ScrollviewµÄ»¬¶¯³åÍ»½â¾ö.md)
+[RecyclerViewçš„itemä¸­åµŒå¥—Scrollviewçš„æ»‘åŠ¨å†²çªè§£å†³](./RecyclerViewçš„itemä¸­åµŒå¥—Scrollviewçš„æ»‘åŠ¨å†²çªè§£å†³.md)
 
-[RxJavaÊ¹ÓÃfilterÊ±ÈçºÎÖªµÀÊÇ·ñËùÓĞµÄitem¶¼±»¹ıÂËÁË](./RxJavaÊ¹ÓÃfilterÊ±ÈçºÎÖªµÀÊÇ·ñËùÓĞµÄitem¶¼±»¹ıÂËÁË.md)
+[RxJavaä½¿ç”¨filteræ—¶å¦‚ä½•çŸ¥é“æ˜¯å¦æ‰€æœ‰çš„iteméƒ½è¢«è¿‡æ»¤äº†](./RxJavaä½¿ç”¨filteræ—¶å¦‚ä½•çŸ¥é“æ˜¯å¦æ‰€æœ‰çš„iteméƒ½è¢«è¿‡æ»¤äº†.md)
 
-[RxJavaÔÚtoList()ºósubscribe()²»Ö´ĞĞµÄÎÊÌâ](./RxJavaÔÚtoList()ºósubscribe()²»Ö´ĞĞµÄÎÊÌâ.md)
+[RxJavaåœ¨toList()åsubscribe()ä¸æ‰§è¡Œçš„é—®é¢˜](./RxJavaåœ¨toList()åsubscribe()ä¸æ‰§è¡Œçš„é—®é¢˜.md)
 
-[RxJavaÊµ¼ÊÓ¦ÓÃÊµÀı-ObservableµÄË³Ğò¶©ÔÄ](./RxJavaÊµ¼ÊÓ¦ÓÃÊµÀı-ObservableµÄË³Ğò¶©ÔÄ.md)
+[RxJavaå®é™…åº”ç”¨å®ä¾‹-Observableçš„é¡ºåºè®¢é˜…](./RxJavaå®é™…åº”ç”¨å®ä¾‹-Observableçš„é¡ºåºè®¢é˜….md)
 
 [RxNote](./RxNote.md)
 
-[TinkerÈÈĞŞ¸´Ô­ÀíÑ§Ï°ºóµÄ¼¸µãË¼¿¼](./TinkerÈÈĞŞ¸´Ô­ÀíÑ§Ï°ºóµÄ¼¸µãË¼¿¼.md)
+[Tinkerçƒ­ä¿®å¤åŸç†å­¦ä¹ åçš„å‡ ç‚¹æ€è€ƒ](./Tinkerçƒ­ä¿®å¤åŸç†å­¦ä¹ åçš„å‡ ç‚¹æ€è€ƒ.md)
 
-[Ò»¸ö»ìÏıºó±¨NullPointerExceptionµÄÎÊÌâ](./Ò»¸ö»ìÏıºó±¨NullPointerExceptionµÄÎÊÌâ.md)
+[ä¸€ä¸ªæ··æ·†åæŠ¥NullPointerExceptionçš„é—®é¢˜](./ä¸€ä¸ªæ··æ·†åæŠ¥NullPointerExceptionçš„é—®é¢˜.md)
 
-[¹ØÓÚzBar²¿·ÖÊÖ»úÉ¨Ãè¿Õ°×´¦Ê¶±ğ³öÌõÂëµÄÎÊÌâ](./¹ØÓÚzBar²¿·ÖÊÖ»úÉ¨Ãè¿Õ°×´¦Ê¶±ğ³öÌõÂëµÄÎÊÌâ.md)
+[å…³äºzBaréƒ¨åˆ†æ‰‹æœºæ‰«æç©ºç™½å¤„è¯†åˆ«å‡ºæ¡ç çš„é—®é¢˜](./å…³äºzBaréƒ¨åˆ†æ‰‹æœºæ‰«æç©ºç™½å¤„è¯†åˆ«å‡ºæ¡ç çš„é—®é¢˜.md)
 
-[»ùÓÚGradleµÄÆÑ¹«Ó¢×Ô¶¯ÉÏ´«task](./»ùÓÚGradleµÄÆÑ¹«Ó¢×Ô¶¯ÉÏ´«task.md)
+[å‡ºç°Default Activity not foundçš„ä¸€ç§æƒ…å†µçš„è§£å†³](./å‡ºç°Default%20Activity%20not%20foundçš„ä¸€ç§æƒ…å†µçš„è§£å†³.md)
 
-[ÈçºÎÊ¹ÓÃAndroid Studio IDEAºÏ²¢gitHubµÄpull request](./ÈçºÎÊ¹ÓÃAndroid%20Studio%20IDEAºÏ²¢gitHubµÄpull%20request.md)
+[åŸºäºGradleçš„è’²å…¬è‹±è‡ªåŠ¨ä¸Šä¼ task](./åŸºäºGradleçš„è’²å…¬è‹±è‡ªåŠ¨ä¸Šä¼ task.md)
 
-[°²×¿¿ª·¢³£ÓÃ²å¼şÍÆ¼ö](./°²×¿¿ª·¢³£ÓÃ²å¼şÍÆ¼ö.md)
+[å¦‚ä½•ä½¿ç”¨Android Studio IDEAåˆå¹¶gitHubçš„pull request](./å¦‚ä½•ä½¿ç”¨Android%20Studio%20IDEAåˆå¹¶gitHubçš„pull%20request.md)
 
-[±à¼­jar°üÖĞclassÎÄ¼şµÄ¼¸ÖÖ·½Ê½](./±à¼­jar°üÖĞclassÎÄ¼şµÄ¼¸ÖÖ·½Ê½.md)
+[å®‰å“å¼€å‘å¸¸ç”¨æ’ä»¶æ¨è](./å®‰å“å¼€å‘å¸¸ç”¨æ’ä»¶æ¨è.md)
 
-[ÍøÂçÇëÇóÓÅ»¯¼ÇÂ¼](./ÍøÂçÇëÇóÓÅ»¯¼ÇÂ¼.md)
+[ç¼–è¾‘jaråŒ…ä¸­classæ–‡ä»¶çš„å‡ ç§æ–¹å¼](./ç¼–è¾‘jaråŒ…ä¸­classæ–‡ä»¶çš„å‡ ç§æ–¹å¼.md)
 
-[Éè¼ÆÄ£Ê½Note](./Éè¼ÆÄ£Ê½Note.md)
+[ç½‘ç»œè¯·æ±‚ä¼˜åŒ–è®°å½•](./ç½‘ç»œè¯·æ±‚ä¼˜åŒ–è®°å½•.md)
 
-[ÃæÊÔÎÊ´ğ¼¯½õ](./ÃæÊÔÎÊ´ğ¼¯½õ.md)
+[è®¾è®¡æ¨¡å¼Note](./è®¾è®¡æ¨¡å¼Note.md)
+
+[é¢è¯•é—®ç­”é›†é”¦](./é¢è¯•é—®ç­”é›†é”¦.md)
 
