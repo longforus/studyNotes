@@ -96,4 +96,89 @@ mVB.etCode.customSelectionActionModeCallback = object : android.view.ActionMode.
 
 
 
+### 把自己的键盘设为系统默认
+
+即使当前系统以及切换到我们的键盘,但是如果我们的键盘升级重装的话,默认输入法又会被恢复为默认是系统键盘,如何自动的再切到我们的键盘呢?通过`Settings.Secure.getString(context.contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD)`可以获取到当前的默认输入法ID.而且还有一个方法`Settings.Secure.putString(context.contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD,SmInputMethod.INPUT_METHOD_ID)`可以设置默认输入法的ID,是不是我们调用这个方法就可以了呢?当然没有这么简单,这个操作需要`android.permission.WRITE_SECURE_SETTINGS`权限,需要是系统APP才能调用,还有没有其他办法呢?如果机器是root了的话,是可以的.
+
+```kotlin
+ val execCmd = ShellUtils.execCmd(
+     "settings put secure default_input_method ${MyInputMethod.INPUT_METHOD_ID}",
+     true,
+     true
+ )
+ LogUtils.d(TAG,execCmd?.result)
+ val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+ val string = Settings.Secure.getString(
+     contentResolver,
+     Settings.Secure.DEFAULT_INPUT_METHOD
+ )
+ LogUtils.d(TAG, "cur ime: $string")
+ val find = imm.enabledInputMethodList.find { it.id == SmInputMethod.INPUT_METHOD_ID }
+ if (find == null) {
+     val keyBordIntent = Intent()
+     keyBordIntent.action = Settings.ACTION_INPUT_METHOD_SETTINGS
+     RxActivityResult.on(this@RelaunchActivity).startIntent(keyBordIntent)
+         .subscribe { result ->
+             result.targetUI().apply {
+                     imm.showInputMethodPicker()
+             }
+         }
+ }
+```
+
+这样就可以了,关于修改secure Settings,我还发现一种方法.
+
+```kotlin
+private fun setDefaultInputMethod() {
+        try {
+
+            val pathname = "/data/system/users/0/settings_secure.xml"
+            ztlManager.execRootCmdSilent("chmod 777 $pathname")
+            val localFile = File(filesDir, "settings_secure.xml")
+            ztlManager.execRootCmdSilent("cp -f $pathname ${localFile.absolutePath}")
+            ztlManager.execRootCmdSilent("chmod 777 ${localFile.absolutePath}")
+            val factory = DocumentBuilderFactory.newInstance()
+            val builder = factory.newDocumentBuilder()
+            val doc = builder.parse(localFile)
+            val root = doc.getElementsByTagName("settings")
+            val item = root.item(0)
+            val childNodes = item.childNodes
+            loopOut@ for (i in 0 until childNodes.length) {
+                val node = childNodes.item(i)
+                val attributes = node.attributes ?: continue@loopOut
+                for (j in 0 until attributes.length) {
+                    val item1 = attributes.item(j)
+                    if (item1.nodeValue == Settings.Secure.DEFAULT_INPUT_METHOD) {
+                        val item2 = attributes.item(j + 1)
+                        item2.nodeValue = SmInputMethod.INPUT_METHOD_ID
+                        val item3 = attributes.item(j + 2)
+                        item3.nodeValue = packageName
+                        LogUtils.d(TAG, "find target ${item2.toString()}")
+                        break@loopOut
+                    }
+                }
+            }
+            val tFactory = TransformerFactory.newInstance();// 将内存中的Dom保存到文件
+            val transformer = tFactory.newTransformer();
+//            // 设置输出的xml的格式，utf-8
+            transformer.setOutputProperty("encoding", "utf-8");
+            val source = DOMSource(doc)
+//            //xml的存放位置
+            val src = StreamResult(localFile)
+            transformer.transform(source, src)
+            ztlManager.execRootCmdSilent("chmod 777 $pathname")
+            ztlManager.execRootCmdSilent("rm -f $pathname")
+            val execCmd =
+                ShellUtils.execCmd("cp -f ${localFile.absolutePath} $pathname", true, true)
+            LogUtils.d(TAG,  execCmd?.errorMsg)
+//            ztlManager.execRootCmdSilent("cp -f ${localFile.absolutePath} $pathname")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+```
+
+发现可以`settings put secure default_input_method ${MyInputMethod.INPUT_METHOD_ID}`之前我是這么实现的,好像有用.也算一个方法吧,对于不支持直接adb shell命令的内容修改,还是可以尝试的.
+
 综上遇到的几个小点.
