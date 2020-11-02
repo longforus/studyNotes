@@ -28,7 +28,7 @@ Plugin "Android Drawable Preview" is incompatible (supported only in IntelliJ ID
 - **手动安装:**
   - 下载[`最新发布的插件包`][latest-release] > <kbd>File</kbd> ><kbd>Preferences(Settings)</kbd> > <kbd>Plugins</kbd> > <kbd>Install plugin from disk...</kbd>
 
-##### 其他相同问题的插件
+#### 其他相同问题的插件
 
 如果有其他插件也出现同样的问题,而作者还没有更新的话,可以尝试强行修改:
 
@@ -65,7 +65,7 @@ Plugin "Android Drawable Preview" is incompatible (supported only in IntelliJ ID
 
 4. 保存,重启AS看是否能使用.**这种方法只适用于不涉及API改变的情况,如果插件有使用已经删除的API等情况的话,用起来也会报错的,不能保证后续功能的正常使用**,还是建议通知原作者更新.
 
-##### 我其他的小插件:
+#### 我其他的小插件:
 
 - MvpAutoCodePlus   mvp模板代码生成 https://github.com/longforus/MvpAutoCodePlus
 - Kotlin Code Sorter   kotlin代码排序  https://github.com/longforus/KotlinCodeSorter
