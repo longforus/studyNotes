@@ -7,6 +7,8 @@
 
 [Android studio项目编译期字节码插入实践Note](./Android%20studio项目编译期字节码插入实践Note.md)
 
+[Android自定义键盘的几个小点](./Android自定义键盘的几个小点.md)
+
 [Apt Note - 手动实现简易版Butterknife](./Apt%20Note%20-%20手动实现简易版Butterknife.md)
 
 [ARouter配合Fragment-Fetch fragment instance error异常的处理](./ARouter配合Fragment-Fetch%20fragment%20instance%20error异常的处理.md)
