@@ -14,59 +14,52 @@
 
 ```shell
 source ~/.bash_profile
-#运行命令并把结果保存到变量cmdRes中
-cmdRes=`adb devices`
-#cmdRes="List of devices attached NZ53MD4GHP	device"
-#echo "${cmdRes}"
-#以空格进行分割为array
-spRes=(`echo $cmdRes | tr ' ' ' '`)
-#spRes=("List" "of" "devices" "attached" "NZ53MD4GHP" "device")
+cmdRes1=`adb devices -l`
+modelResult=(`echo $cmdRes1 | grep -E -o "model:\S+"`)
+# echo "${modelResult}"
+snResult=(`echo $cmdRes1 | grep -E -o "(\S+)\s+device usb:"`)
+#echo "${snResult}"
+length=${#modelResult}
+# echo "${length}"
 xmlString="{\"items\": [\n"
-keyword=("List" "of" "devices" "attached" "device")
-hasMore=0
-#遍历结果
-for dev in ${spRes[@]}
+snIndex=0
+for (( k=0; k <= $length; k++ ))
 do
-    has=0
-    for key in ${keyword[@]}
-    do
-    {
-        if [ $dev = $key ]
-        then
-            has=1
-            continue
-        fi
-    }
-    done
-    #如果关键字中不包含即为设备号
-    if [ "$has" -eq '0' ]; then
-     #  echo $dev
-        if [ "$hasMore" -eq '1' ]; then
+    if [ -n "${modelResult[$k]}" ]
+    then
+        mod=${modelResult[$k]}
+        mod=(`echo $mod | tr ':' ' '`)
+        mod="${mod[1]}"
+        if [ "$snIndex" -gt '0' ]; then
 	        xmlString+=","
         fi
-    hasMore=1
-    thisXmlString="{
+        dev=${snResult[$snIndex]}
+        thisXmlString="{
         \"uid\": \"$dev\",
         \"type\": \"file\",
-        \"title\": \"$dev\",
+        \"title\": \"$mod\",
         \"subtitle\": \"$dev\",
         \"arg\": \"$dev\",
         \"autocomplete\": \"$dev\"
     }\n"
 	# Append this process's XML string to the global XML string.
 	xmlString+=$thisXmlString
+    snIndex+=3
     fi
 done
-
 xmlString+="]}"
 # xmlString="{\"items\": [
 # { \"uid\": \"NZ53MD4GHP\", \"type\": \"file\", \"title\": \"NZ53MD4GHP\", \"subtitle\": #\"NZ53MD4GHP\", \"arg\": \"NZ53MD4GHP\", \"autocomplete\": \"NZ53MD4GHP\" }
 # ]}"
 #最后将结果输出,就可以在列表中选择了
 echo -e $xmlString
+
 ```
 
-需要注意的点是，不要在脚本中输出非结果json外的信息，因为输出都被当为结果了，如果不是标准的json或者xml就会解析出错。构建输出标准的结果就能实现列表的展示和选项的选择了。
+需要注意的点是:
+
+1. 不要在脚本中输出非结果json外的信息，因为输出都被当为结果了，如果不是标准的json或者xml就会解析出错。构建输出标准的结果就能实现列表的展示和选项的选择了。
+2. zsh和bash的效果是不一样的,上面后面修改过的脚本在zsh下就不能生效.
 
 ![2](Alfred Workflow实现scrcpy快捷启动.assets/2.png)
 
@@ -82,7 +75,7 @@ echo -e $xmlString
 
 ## 打包下载
 
-https://wwx.lanzoux.com/iTq7njsq7gb
-
+旧版本: https://wwx.lanzoux.com/iTq7njsq7gb
+新版本: [https://wwx.lanzoux.com/iRsI2k3lkih](https://wwx.lanzoux.com/iRsI2k3lkih)
 模式都是相同的，根据这个可以实现更多有趣实用的功能。
 
