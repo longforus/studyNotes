@@ -82,9 +82,11 @@ class MemberCenterFragment : BaseMvcFragment() {
         }
 
     }
-   ``````
-   //Decompile java:
-    public final class MemberCenterFragment extends BaseMvcFragment {
+```
+
+```java
+//Decompile java:
+public final class MemberCenterFragment extends BaseMvcFragment {
    @NotNull
    private final NavCallback loginCallBack = (NavCallback)(new NavCallback() {
       public void onInterrupt(@Nullable Postcard postcard) {
@@ -112,10 +114,12 @@ class MemberCenterFragment : BaseMvcFragment() {
         }
     }
     
-    ``````
-     //使用activity(实际调用getActivity()方法)时的 Decompile java:
-    public final class MemberCenterFragment extends BaseMvcFragment {
-   private final LoginNVCallBack loginCallBack = new LoginNVCallBack((Activity)this.getActivity(), '픍', (Function0)(new Function0() {
+```
+
+```java
+ //使用activity(实际调用getActivity()方法)时的 Decompile java:
+ public final class MemberCenterFragment extends BaseMvcFragment {
+ private final LoginNVCallBack loginCallBack = new LoginNVCallBack((Activity)this.getActivity(), '픍', (Function0)(new Function0() {
       // $FF: synthetic method
       // $FF: bridge method
       public Object invoke() {
@@ -131,8 +135,10 @@ class MemberCenterFragment : BaseMvcFragment() {
          }));
       }
    }));
-    ``````
-     //使用mActivity,(自己定义的字段)时的 Decompile java:
+```
+
+```java
+   //使用mActivity,(自己定义的字段)时的 Decompile java:
    public final class MemberCenterFragment extends BaseMvcFragment {
    @NotNull
    private final LoginNVCallBack loginCallBack;//注意:初始化被放到了构造方法中
@@ -154,9 +160,10 @@ class MemberCenterFragment : BaseMvcFragment() {
          }
       }));
    }
+```
 
-    ``````
- class LoginNVCallBack(val context: Context?, val requestCode: Int = FecBaseActivity.REQUEST_REFRESH_KEY,private var callback: (() -> Unit)? = null) : NavCallback() {
+```kotlin
+class LoginNVCallBack(val context: Context?, val requestCode: Int = FecBaseActivity.REQUEST_REFRESH_KEY,private var callback: (() -> Unit)? = null) : NavCallback() {
     constructor(activity: Activity?, requestCode: Int = FecBaseActivity.REQUEST_REFRESH_KEY, callback: (() -> Unit)? = null) : this(activity as Context, requestCode, callback)
      
     override fun onArrival(postcard: Postcard?) {
@@ -170,7 +177,7 @@ class MemberCenterFragment : BaseMvcFragment() {
             ARouter.getInstance().build("/memberCenter/selectLoginActivity").navigation(context)
         }
     }
-    
+
 }
 ```
 
@@ -190,11 +197,7 @@ class MemberCenterFragment : BaseMvcFragment() {
             }
         }
     }
-    ``````
 ```
-
-
-
 具体的原因还需要继续研究.在研究这个问题的时候发现了一个小细节:
 
 loginCallBack在使用activity,(实际调用的是getActivity()方法)的时候被直接赋值初始化,在使用mActivity(自己定义的字段在onCreate()方法中被赋值为getActivity())的时候,初始化则被放到了构造方法中.
@@ -212,7 +215,7 @@ class LoginNVCallBack(var context: Context?,val requestCode: Int = FecBaseActivi
 
     override fun onArrival(postcard: Postcard?) {
     }
-
+    
     override fun onInterrupt(postcard: Postcard?) {
         callback?.invoke()
         if (context is Activity) {
@@ -223,7 +226,5 @@ class LoginNVCallBack(var context: Context?,val requestCode: Int = FecBaseActivi
     }
 }
 ```
-
-
 
 因为前面在被赋值的时候,MemberCenterFragment里面不管的getActivity()还是mActivity都是为null的. LoginNVCallBack构造方法的activity: Activity?也为null,但是在调用主构造方法的时候被强转为非空类型,所以出现了异常.可能以为混编的问题,错误日志也没有得到输出.造成了上述的问题,以后要注意.

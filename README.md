@@ -17,6 +17,8 @@
 
 [Java Note](./Java%20Note.md)
 
+[JNI的简单动态注册及反编译查看](./JNI的简单动态注册及反编译查看.md)
+
 [Kotlin的inline noinline笔记](./Kotlin的inline%20noinline笔记.md)
 
 [Mars Android 接入实践Note](./Mars%20Android%20接入实践Note.md)
@@ -43,11 +45,15 @@
 
 [出现Default Activity not found的一种情况的解决](./出现Default%20Activity%20not%20found的一种情况的解决.md)
 
+[单盘黑群晖更换硬盘实操记录](./单盘黑群晖更换硬盘实操记录.md)
+
 [基于Gradle的蒲公英自动上传task](./基于Gradle的蒲公英自动上传task.md)
 
 [如何使用Android Studio IDEA合并gitHub的pull request](./如何使用Android%20Studio%20IDEA合并gitHub的pull%20request.md)
 
 [安卓开发常用插件推荐](./安卓开发常用插件推荐.md)
+
+[开启MultiDex仍然报65535方法数的一种情况的解决](./开启MultiDex仍然报65535方法数的一种情况的解决.md)
 
 [编辑jar包中class文件的几种方式](./编辑jar包中class文件的几种方式.md)
 
