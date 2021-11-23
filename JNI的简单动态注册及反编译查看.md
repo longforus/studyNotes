@@ -1,6 +1,6 @@
 # JNI的简单动态注册及反编译查看
 
-在常规的JNI静态注册中,用IDA打开对应的so(share object)库后就能直接在Exports选项卡中找到对应的方法入口:
+在常规的JNI静态注册中,用IDA打开对应的so(shared object)库后就能直接在Exports选项卡中找到对应的方法入口:
 
 ```kotlin
 external fun staticRegister(f1:Float,f2:Float):Float
@@ -155,6 +155,8 @@ int __fastcall registerNM(_JNIEnv *a1)
 双击`realImplMethods`进入后:
 
 ![image-20211117182348036](JNI的简单动态注册及反编译查看.assets/image-20211117182348036.png)
+
+- 动态注册的函数一般会在`.data.rel.ro.local`或data中, Ctrl+s打开segment表 找到`.data.rel.ro.local `这个段里面放的是动态注册的函数.上图中正是data.rel.ro表
 
 直接就发现了真实做实现的`sub`指针,而且可以双击进入:
 
