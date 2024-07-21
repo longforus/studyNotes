@@ -86,3 +86,145 @@ C:\Git\git-bash.exe D:\MyDocuments\Desktop\apkInstall.sh %1
 
 
 完了.
+
+2024年6月7日 18:41:06更新 Directory Opus 13.6 可用的apk文件右键菜单脚本:
+
+```js
+// apk文件的右键经过adb安装的脚本,可以在多个设备中选择
+
+function OnClick(clickData) {
+    try {
+      
+ 		// 检查是否选中了文件
+        if (clickData.func.sourcetab.selected_files.count == 0) {
+            DOpus.Output("没有选中任何文件");
+            return;
+        }
+        // 获取选中的文件名
+        var selectedFile = clickData.func.sourcetab.selected_files(0).realpath;
+        DOpus.Output("选中的文件: " + selectedFile);
+        // 创建 WScript.Shell 对象
+        var WshShell = new ActiveXObject("WScript.Shell");
+        // 调试输出，确认 WshShell 对象是否创建成功
+        DOpus.Output("WshShell 对象创建成功");
+
+        // 使用完整路径或确保 adb 在环境变量路径中
+        var adbPath = "adb"; // 如果 adb 在环境变量中
+        var adbExec = WshShell.Exec(adbPath + " devices -l");
+        // 调试输出，确认命令是否成功执行
+        DOpus.Output("adb 命令已执行");
+
+        // 等待命令执行完成
+        while (adbExec.Status == 0) {
+            DOpus.Output("等待 adb 命令完成...");
+            DOpus.Delay(500);
+        }
+
+        // 输出命令的退出代码
+        DOpus.Output("adb 命令退出代码: " + adbExec.ExitCode);
+        // 输出命令的标准输出
+        var output = adbExec.StdOut.ReadAll();
+        DOpus.Output("adb 命令输出: " + output);
+        // 输出命令的错误输出
+        var errorOutput = adbExec.StdErr.ReadAll();
+        if (errorOutput) {
+            DOpus.Output("adb 命令错误输出: " + errorOutput);
+        }
+
+        // 解析 adb 命令的输出，提取设备信息
+        var deviceList = [];
+        var lines = output.split('\n');
+        for (var i = 1; i < lines.length; i++) {
+            var line = lines[i];
+            if (line) {
+                var parts = line.split(/\s+/);
+                if (parts.length > 2) {
+                    var deviceId = parts[0];
+                    var model = "";
+                    for (var j = 0; j < parts.length; j++) {
+                        if (parts[j].indexOf("model:") === 0) {
+                            model = parts[j].split(':')[1];
+                            break;
+                        }
+                    }
+					DOpus.Output("deviceId "+deviceId+" model  "+model);
+                    deviceList.push({id: deviceId, model: model});
+                }
+            }
+        }
+        // 如果没有设备，输出提示信息
+        if (deviceList.length === 0) {
+            DOpus.Output("没有检测到设备"+deviceList);
+            return;
+        }
+
+        // 创建选择对话框
+        var dlg = clickData.func.dlg;
+        dlg.title = "选择设备";
+        dlg.message = "请选择一个设备进行安装:";
+        var buttons = "";
+       for (var k = deviceList.length - 1; k >= 0; k--) {
+            if (buttons.length > 0) {
+                buttons += "|";
+            }
+            buttons += deviceList[k].model;
+        }
+        dlg.buttons = buttons;
+        dlg.Show();
+
+         var selectedIndex = dlg.result;
+		 DOpus.Output("selectedIndex = "+selectedIndex);
+        if (selectedIndex < 0) {
+            DOpus.Output("用户未选择任何设备");
+            return;
+        }
+        // 根据选择的索引获取设备ID
+        var deviceId = deviceList[selectedIndex].id;
+        // 执行 adb install 命令
+        var apkPath = selectedFile; // 使用选中的 APK 文件路径
+        var installCmd = adbPath + " -s " + deviceId + " install " + apkPath;
+        DOpus.Output("执行命令: " + installCmd);
+        var installExec = WshShell.Exec(installCmd);
+        // 等待安装命令完成
+        while (installExec.Status == 0) {
+            DOpus.Output("等待 adb install 命令完成...");
+            DOpus.Delay(500);
+        }
+
+        // 输出安装命令的退出代码
+        DOpus.Output("adb install 命令退出代码: " + installExec.ExitCode);
+         // 输出安装命令的标准输出
+        var installOutput = installExec.StdOut.ReadAll();
+        DOpus.Output("adb install 命令输出: " + installOutput);
+        // 输出安装命令的错误输出
+        var installErrorOutput = installExec.StdErr.ReadAll();
+        if (installErrorOutput) {
+            DOpus.Output("adb install 命令错误输出: " + installErrorOutput);
+        }
+    } catch (e) {
+        // 捕获并输出错误信息
+        DOpus.Output("发生错误: " + e.message);
+    }
+}
+
+```
+
+### 安装方法
+
+1.  Directory Opus 13.6 设置->文件类型:
+
+2. 搜索apk
+
+    ![image-20240607184629074](双击安装Apk,可选目标设备的小脚本.assets/image-20240607184629074.png)
+
+3. 选择新建
+
+    ![image-20240607184812069](双击安装Apk,可选目标设备的小脚本.assets/image-20240607184812069.png)
+
+### 使用
+
+![image-20240607184915018](双击安装Apk,可选目标设备的小脚本.assets/image-20240607184915018.png)
+
+![image-20240607185006278](双击安装Apk,可选目标设备的小脚本.assets/image-20240607185006278.png)
+
+选择对应的设备就可以了,存在的问题是会弹出命令行的黑框.但是比输序号还是要方便,优雅一些
