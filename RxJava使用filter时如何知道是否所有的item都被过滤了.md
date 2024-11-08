@@ -5,17 +5,17 @@
 filter操作符本身并没有提供这样的功能,只能通过其他的方式了:
 
 ```kotlin
- 		   var hasElement = false
-            map = map.filter {
-               return 过滤结果
-            }.doOnNext {
-                hasElement = true
-            }.doOnTerminate {
-                if (!hasElement) {
-                   	//全被过滤了
-                    onResult.invoke(0)
-                }
-            }
+var hasElement = false
+map = map.filter {
+   return 过滤结果
+ }.doOnNext {
+       hasElement = true
+ }.doOnTerminate {
+     if (!hasElement) {
+        	//全被过滤了
+         onResult.invoke(0)
+   }
+}
 ```
 
 这样在onTerminate的时候我们查看是否有元素被发射,就知道有没有被全部过滤掉了.

@@ -1,5 +1,7 @@
 # JNI的简单动态注册及反编译查看
 
+**给我搞晕了,国内的文章说的动态注册和[国外的文章](https://valsamaras.medium.com/tracing-jni-functions-75b04bee7c58)说的动态注册恰恰相反,JNI的文档里面也没看出来,我也确定不了到底那种是动态,那种是静态,感觉上国内文章的说法更符合直觉,就这么用吧.**
+
 在常规的JNI静态注册中,用IDA打开对应的so(shared object)库后就能直接在Exports选项卡中找到对应的方法入口:
 
 ```kotlin
