@@ -32,7 +32,7 @@
 
 以上方案各有优缺点.最好的方案应该是取其优者而从之.功能模块和客户工程仍旧使用git进行管理.但是客户工程一开始并不直接依赖功能模块的源代码.而是依赖现有功能模块的aar,在需要对现有功能模块进行修改的时候才动态的导入功能模块源码,进行修改,测试.一旦修改完成,仍旧将功能模块打包上传,修改客户工程依赖新版本的功能模块aar.充分保证编译效率的同时,减少功尽量能模块迭代期间造成的非预期BUG.在这一过程中,还会结合jenkins持续集成系统,在子模块修改完成后,push到仓库后触发,jenkins的构建,自动提高功能模块aar版本,构建完成后自动上传到maven私服,客户工程刷新依赖,获取到最新版的功能模块aar.
 
-![](Android modular project module version control and continuous integration scheme.assets/structure_chart.png)
+![](<Android modular project module version control and continuous integration scheme.assets/structure_chart.png>)
 
 ## 实现细节
 
@@ -79,7 +79,7 @@
 
 安装必要插件,需要注意的是,远程触发构建不成功的问题.是权限认证问题,Configure Global Security设置如下:
 
-![](Android modular project module version control and continuous integration scheme.assets/jenkins_security_setting.png)
+![](<Android modular project module version control and continuous integration scheme.assets/jenkins_security_setting.png>)
 
 远程触发使用插件:[[GitLab Plugin](https://wiki.jenkins.io/display/JENKINS/GitLab+Plugin)],名字相关的都安装.
 
@@ -239,7 +239,7 @@ buildscript {
 
 配置Jenkins的模块项目构建过程如下:
 
-![](Android modular project module version control and continuous integration scheme.assets/module_build_setting.png)
+![](<Android modular project module version control and continuous integration scheme.assets/module_build_setting.png>)
 
 #### 构建结果
 
@@ -251,7 +251,7 @@ buildscript {
 
 3.  项目设置如下:
 
-    ![](Android modular project module version control and continuous integration scheme.assets/set_desc.png)
+    ![](<Android modular project module version control and continuous integration scheme.assets/set_desc.png>)
 
 ### ONEs集成
 

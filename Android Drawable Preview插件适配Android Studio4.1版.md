@@ -4,15 +4,15 @@
 
 使用之前:
 
-![](Android Drawable Preview插件适配Android Studio4.1版/4.png)
+![](<Android Drawable Preview插件适配Android Studio4.1版/4.png>)
 
-![](Android Drawable Preview插件适配Android Studio4.1版/3.png)
+![](<Android Drawable Preview插件适配Android Studio4.1版/3.png>)
 
 使用之后:
 
-![](Android Drawable Preview插件适配Android Studio4.1版/1.png)
+![](<Android Drawable Preview插件适配Android Studio4.1版/1.png>)
 
-![](Android Drawable Preview插件适配Android Studio4.1版/2-1602811767972.png)
+![](<Android Drawable Preview插件适配Android Studio4.1版/2-1602811767972.png>)
 
 便利程度自然不用多说,是我一直使用的重要插件之一.
 

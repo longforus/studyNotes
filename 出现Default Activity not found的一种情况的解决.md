@@ -12,17 +12,17 @@
 
 4. 直接指定要启动的activity:
 
-    ![](.\出现Default Activity not found的一种情况的解决\1.png)
+    ![1p](<出现Default Activity not found的一种情况的解决/1.png>)
 
     在弹出的Configurations对话框的Launch中选择Specified Activity,在Activity中选择要启动的Activity:
-    ![](出现Default Activity not found的一种情况的解决/2.png)
+    ![](<出现Default Activity not found的一种情况的解决/2.png>)
     图中选择了以后,提示该activity不在清单中,但是检查清单,这个activity当然是声明了的.这时候很可能的情况就是清单合并失败了.
 
-    ![](出现Default Activity not found的一种情况的解决/qqpyimg1595411458.gif)
+    ![](<出现Default Activity not found的一种情况的解决/qqpyimg1595411458.gif>)
 
 5. 检查清单合并,打开app module的清单文件,点击清单窗口左下↙的Merged Manifest:
 
-    ![](出现Default Activity not found的一种情况的解决/3.png)
+    ![](<出现Default Activity not found的一种情况的解决/3.png>)
 
     可以看到,左边并没有显示合并后的清单,右边也显示了合并出错的原因,只要解决相应的问题,左边就会显示合并后的清单文件,也就能正常启动build进行安装了.
 

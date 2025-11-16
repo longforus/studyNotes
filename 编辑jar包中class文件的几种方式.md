@@ -19,13 +19,13 @@
 
 下载安装[JD-GUI](http://java-decompiler.github.io/),打开需要修改的jar包,找到想要修改的class文件, `Ctrl+s`保存为.java文件.
 
-![jdgui](编辑jar包中class文件的几种方式.assets/屏幕快照 2019-04-09 10.25.35 PM-4820214.png)
+![jdgui](<编辑jar包中class文件的几种方式.assets/屏幕快照 2019-04-09 10.25.35 PM-4820214.png>)
 
 ### 拷贝到项目中修改
 
 建立对应的包,拷贝到包中修改,这个module需要依赖这个jar包.
 
-![edit.javafile](编辑jar包中class文件的几种方式.assets/屏幕快照 2019-04-09 10.31.15 PM.png)
+![edit.javafile](<编辑jar包中class文件的几种方式.assets/屏幕快照 2019-04-09 10.31.15 PM.png>)
 
 ### 合并处理
 

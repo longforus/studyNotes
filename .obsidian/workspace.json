@@ -1,0 +1,217 @@
+{
+  "main": {
+    "id": "6f1e97934ec7c945",
+    "type": "split",
+    "children": [
+      {
+        "id": "4ace3681a41a00ef",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "14fd492fd0520678",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "安卓开发常用插件推荐.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "安卓开发常用插件推荐"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "4ea72764d6e34264",
+    "type": "split",
+    "children": [
+      {
+        "id": "d419906c9dff4b09",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c3fe2e22e27ece37",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "2c9b455f49e89882",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "3402f9211603e999",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "b3009d1ebf7d7a41",
+    "type": "split",
+    "children": [
+      {
+        "id": "acf7e2c7f72138c8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "04ab829f311e07fe",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "安卓开发常用插件推荐.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "安卓开发常用插件推荐 的反向链接列表"
+            }
+          },
+          {
+            "id": "229df25ab6195a04",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "安卓开发常用插件推荐.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "安卓开发常用插件推荐 的出链列表"
+            }
+          },
+          {
+            "id": "ab613a365f6fd40e",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "1eee4fde4234283c",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "4b8cae162f70e83c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "安卓开发常用插件推荐.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "安卓开发常用插件推荐 的大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:创建新数据库": false
+    }
+  },
+  "active": "14fd492fd0520678",
+  "lastOpenFiles": [
+    "编辑jar包中class文件的几种方式.md",
+    "单盘黑群晖更换硬盘实操记录.md",
+    "模块化仓库结构.png",
+    "Android modular project module version control and continuous integration scheme.md",
+    "JNI的简单动态注册及反编译查看.md",
+    "Java Note.md",
+    "IRremoteESP8266红外信号转安卓.md",
+    "Android studio项目编译期字节码插入实践Note.md",
+    "Android Drawable Preview插件适配Android Studio4.1版.md",
+    "安卓开发常用插件推荐.md",
+    "一个混淆后报NullPointerException的问题.md",
+    "面试问答集锦.md",
+    "设计模式Note.md",
+    "Tinker热修复原理学习后的几点思考.md",
+    "RxNote.md",
+    "RxJava在toList()后subscribe()不执行的问题.md",
+    "RxJava使用filter时如何知道是否所有的item都被过滤了.md",
+    "RecyclerView的item中嵌套Scrollview的滑动冲突解决.md",
+    "README.md",
+    "Mars Android 接入实践Note.md",
+    "Kotlin中groupBy和groupingBy使用中的对比.md",
+    "Kotlin的inline noinline笔记.md",
+    "网络请求优化记录.md",
+    "双击安装Apk,可选目标设备的小脚本.md",
+    "关于zBar部分手机扫描空白处识别出条码的问题.md",
+    "出现Default Activity not found的一种情况的解决.md",
+    "如何使用Android Studio  IDEA合并gitHub的pull request.md",
+    "如何使用Android Studio  IDEA合并gitHub的pull request.assets/2.png"
+  ]
+}

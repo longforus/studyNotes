@@ -1,4 +1,4 @@
-﻿# Android studio项目编译期字节码插入实践Note
+# Android studio项目编译期字节码插入实践Note
 
 标签（空格分隔）： Android
 

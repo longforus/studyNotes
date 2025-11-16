@@ -13,17 +13,17 @@
 
 
 
-![new request](如何使用Android Studio  IDEA合并gitHub的pull request.assets/1.png)
+![new request](<如何使用Android Studio  IDEA合并gitHub的pull request.assets/1.png>)
 
-![2](如何使用Android Studio  IDEA合并gitHub的pull request.assets/2.png)
+![2png](<如何使用Android Studio  IDEA合并gitHub的pull request.assets/2.png>)
 
 这里要注意左边的仓库是要合并到的仓库,原作者的再左边就是实现上面的功能1,向原仓库提交代码.如果要获取原仓库的更新的话,左边选择我们自己的仓库.
 
-![3](如何使用Android Studio  IDEA合并gitHub的pull request.assets/3.png)
+![3png](<如何使用Android Studio  IDEA合并gitHub的pull request.assets/3.png>)
 
 *选了之后你会发现不能再选择仓库了,这时候点击右边的`compare across forks`展开*.
 
-![4](如何使用Android Studio  IDEA合并gitHub的pull request.assets/4.png)
+![4png](<如何使用Android Studio  IDEA合并gitHub的pull request.assets/4.png>)
 
 现在右边选择原作者的仓库,创建的pull request,就是提交给你自己.
 
@@ -37,13 +37,13 @@
 
 3. pull 原仓库分支,`git pull https://github.com/Bigkoo/Android-PickerView.git master`,这一步我没有发现怎么在as里面操作.添加原仓库为remote好像是不行的.
 
-   ![5](如何使用Android Studio  IDEA合并gitHub的pull request.assets/5.png)
+   ![5png](<如何使用Android Studio  IDEA合并gitHub的pull request.assets/5.png>)
 
 4. pull了之后就会提示冲突了,这个时候到as中点击:
 
-   ![6](如何使用Android Studio  IDEA合并gitHub的pull request.assets/6.png)
+   ![6p](<如何使用Android Studio  IDEA合并gitHub的pull request.assets/6.png>)
 
-   ![7](如何使用Android Studio  IDEA合并gitHub的pull request.assets/7.png)
+   ![7p](<如何使用Android Studio  IDEA合并gitHub的pull request.assets/7.png>)
 
    解决冲突就好了.
 

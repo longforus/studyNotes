@@ -1,4 +1,4 @@
-﻿# RecyclerView列表嵌套情况下单列表实现子view复用
+# RecyclerView列表嵌套情况下单列表实现子view复用
 
 标签（空格分隔）： Android
 
