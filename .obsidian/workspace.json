@@ -11,14 +11,14 @@
             "id": "14fd492fd0520678",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "split-diff-view",
               "state": {
-                "file": "RxJava在toList()后subscribe()不执行的问题.md",
-                "mode": "source",
-                "source": false
+                "aFile": ".obsidian/workspace.json",
+                "bFile": ".obsidian/workspace.json",
+                "aRef": ""
               },
-              "icon": "lucide-file",
-              "title": "RxJava在toList()后subscribe()不执行的问题"
+              "icon": "diff",
+              "title": "Diff: workspace.json"
             }
           }
         ]
@@ -164,13 +164,23 @@
               "icon": "lucide-list",
               "title": "RxJava在toList()后subscribe()不执行的问题 的大纲"
             }
+          },
+          {
+            "id": "0b6d6c9424c6f985",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -180,11 +190,15 @@
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "bases:创建新数据库": false
+      "bases:创建新数据库": false,
+      "obsidian-git:Open Git source control": false
     }
   },
-  "active": "14fd492fd0520678",
+  "active": "0b6d6c9424c6f985",
   "lastOpenFiles": [
+    "未命名 1.base",
+    "未命名.base",
+    "RxJava在toList()后subscribe()不执行的问题.md",
     "RxJava实际应用实例-Observable的顺序订阅.md",
     "RxJava使用filter时如何知道是否所有的item都被过滤了.md",
     "安卓开发常用插件推荐.md",
@@ -215,11 +229,9 @@
     "设计模式Note.md",
     "Tinker热修复原理学习后的几点思考.md",
     "RxNote.md",
-    "RxJava在toList()后subscribe()不执行的问题.md",
     "RecyclerView的item中嵌套Scrollview的滑动冲突解决.md",
     "README.md",
     "Mars Android 接入实践Note.md",
-    "Kotlin中groupBy和groupingBy使用中的对比.md",
     "如何使用Android Studio  IDEA合并gitHub的pull request.assets/2.png"
   ]
 }
