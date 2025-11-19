@@ -11,13 +11,11 @@ Clash Verge 全局代理 C机 → 访问外网
 
 ```
 
-
-
 ## C机服务端出口 ubuntu20.04
 
 ### 安装mihomo
 
-`````````````````````````````````````````````shell
+```shell
  mkdir -p ~/clash-meta && cd ~/clash-meta
  wget https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/mihomo-linux-amd64-alpha-5344e86.deb
  sudo dpkg -i mihomo-linux-amd64-alpha-5344e86.deb
@@ -30,7 +28,7 @@ Clash Verge 全局代理 C机 → 访问外网
  cd ~/.config/mihomo
  nano config.yaml
  
- `````````````````````````````````
+------------------------------------------------
 mode: global
 mixed-port: 7890
 allow-lan: true
@@ -39,12 +37,12 @@ secret: ''
 external-controller: 0.0.0.0:9090
 external-ui: ../mihomo/ui
 
-``````````````````````````````
+-----------------------------------------------
 
 
 
 sudo nano /etc/systemd/system/mihomo.service
-```````````````````````````````````````
+------------------------------------------------
 [Unit]
 Description=Mihomo (Clash.Meta) Service
 After=network.target
@@ -58,12 +56,12 @@ LimitNOFILE=1048576
 
 [Install]
 WantedBy=multi-user.target
-````````````````````````````````````````````
+---------------------------------------------------
 sudo systemctl daemon-reexec  # 或 sudo systemctl daemon-reload
 sudo systemctl enable mihomo
 sudo systemctl start mihomo
 
-`````````````````````````````````````````````
+```
 
 启动后[yacd](http://192.168.0.227:9090/ui/#/)可以访问ui   
 
@@ -81,7 +79,7 @@ sudo systemctl start mihomo
  cp frpc.toml /etc/frp/
  sudo nano /etc/frp/frpc.toml
  
- ```````````````````````````````````````````
+ -----------------------------------------------
  [common]
 server_addr = "1.2.3.4"
 server_port = 7000
@@ -92,11 +90,11 @@ type = "tcp"
 local_ip = "127.0.0.1"
 local_port = 7890   #mihomo的本地代理端口
 remote_port = 8334  #這个就是A机代理需要填的端口,不同的C机需要不同的端口
- ```````````````````````````````````````````
+ --------------------------------------------------------
  
  sudo nano /etc/systemd/system/frpc.service
  
- ``````````````````````````````````````````````
+ -----------------------------------------------------------
  [Unit]
 Description=FRP Client Service
 After=network.target
@@ -109,7 +107,7 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 
- ``````````````````````````````````````````````
+ ---------------------------------------
  
  
 sudo systemctl daemon-reexec  # 或 daemon-reload

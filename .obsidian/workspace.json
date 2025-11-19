@@ -11,14 +11,14 @@
             "id": "14fd492fd0520678",
             "type": "leaf",
             "state": {
-              "type": "split-diff-view",
+              "type": "markdown",
               "state": {
-                "aFile": ".obsidian/workspace.json",
-                "bFile": ".obsidian/workspace.json",
-                "aRef": ""
+                "file": "关于zBar部分手机扫描空白处识别出条码的问题.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "diff",
-              "title": "Diff: workspace.json"
+              "icon": "lucide-file",
+              "title": "关于zBar部分手机扫描空白处识别出条码的问题"
             }
           }
         ]
@@ -194,12 +194,20 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "0b6d6c9424c6f985",
+  "active": "14fd492fd0520678",
   "lastOpenFiles": [
+    "开启MultiDex仍然报65535方法数的一种情况的解决.md",
+    "模块化仓库结构.png",
+    "单盘黑群晖更换硬盘实操记录.md",
+    "设计模式Note.md",
+    "Directory Opus 添加管理员获得所有权右键菜单.md",
+    "Fridia Java.classFactory.loaderCannot assign to 'loader' because it is a read-only property.md",
+    "RxJava实际应用实例-Observable的顺序订阅.md",
+    "Kotlin中groupBy和groupingBy使用中的对比.md",
+    "frp+clash实现固定代理.md",
     "未命名 1.base",
     "未命名.base",
     "RxJava在toList()后subscribe()不执行的问题.md",
-    "RxJava实际应用实例-Observable的顺序订阅.md",
     "RxJava使用filter时如何知道是否所有的item都被过滤了.md",
     "安卓开发常用插件推荐.md",
     "RxJava使用filter时如何知道是否所有的item都被过滤了.md~",
@@ -208,16 +216,11 @@
     "不支持UEFI的老显卡修改vBIOS进行支持.md",
     "不支持UEFI的老显卡修改vBIOS进行支持.assets/hd7750gpuz.jpg",
     "不支持UEFI的老显卡修改vBIOS进行支持.assets",
-    "frp+clash实现固定代理.md",
-    "Fridia Java.classFactory.loaderCannot assign to 'loader' because it is a read-only property.md",
-    "Directory Opus 添加管理员获得所有权右键菜单.md",
     "Directory Opus 添加管理员获得所有权右键菜单.assets/image-20240821114154010.png",
     "Directory Opus 添加管理员获得所有权右键菜单.assets/image-20240821114004524.png",
     "Directory Opus 添加管理员获得所有权右键菜单.assets/image-20240821113710520.png",
     "Directory Opus 添加管理员获得所有权右键菜单.assets",
     "编辑jar包中class文件的几种方式.md",
-    "单盘黑群晖更换硬盘实操记录.md",
-    "模块化仓库结构.png",
     "Android modular project module version control and continuous integration scheme.md",
     "JNI的简单动态注册及反编译查看.md",
     "Java Note.md",
@@ -226,12 +229,10 @@
     "Android Drawable Preview插件适配Android Studio4.1版.md",
     "一个混淆后报NullPointerException的问题.md",
     "面试问答集锦.md",
-    "设计模式Note.md",
     "Tinker热修复原理学习后的几点思考.md",
     "RxNote.md",
     "RecyclerView的item中嵌套Scrollview的滑动冲突解决.md",
     "README.md",
-    "Mars Android 接入实践Note.md",
     "如何使用Android Studio  IDEA合并gitHub的pull request.assets/2.png"
   ]
 }
