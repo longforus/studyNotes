@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "4ace3681a41a00ef",
+        "id": "0569655726482509",
         "type": "tabs",
         "children": [
           {
-            "id": "14fd492fd0520678",
+            "id": "474ac2c3fc3b42c0",
             "type": "leaf",
             "state": {
-              "type": "split-diff-view",
+              "type": "markdown",
               "state": {
-                "aFile": ".obsidian/workspace.json",
-                "bFile": ".obsidian/workspace.json",
-                "aRef": ""
+                "file": "Android studio项目编译期字节码插入实践Note.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "diff",
-              "title": "Diff: workspace.json"
+              "icon": "lucide-file",
+              "title": "Android studio项目编译期字节码插入实践Note"
             }
           }
         ]
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "RxJava在toList()后subscribe()不执行的问题.md",
+                "file": "Android studio项目编译期字节码插入实践Note.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "RxJava在toList()后subscribe()不执行的问题 的大纲"
+              "title": "Android studio项目编译期字节码插入实践Note 的大纲"
             }
           },
           {
@@ -176,11 +176,12 @@
             }
           }
         ],
-        "currentTab": 5
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -194,7 +195,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "0b6d6c9424c6f985",
+  "active": "474ac2c3fc3b42c0",
   "lastOpenFiles": [
     "未命名 1.base",
     "未命名.base",
