@@ -60,7 +60,7 @@ Java.enumerateClassLoaders({
                 var  clazz =  secondFactory.use('com.xxx.TargetClass');
                 //这里就可以对clazz正常使用了
                 clazz.xxx.implementation = function(){
-                    ``````
+                    ......
                 }
             }
         },

@@ -23,7 +23,7 @@
             }
             realUpload(path, localListener, mModel, 3)//开始上传
             
-            ``````
+            -----------
             
 fun realUpload(path: String, listener: UploadListener, model: IDisposablePool, type: Int) {
     val map = FecFileRequestMap()
