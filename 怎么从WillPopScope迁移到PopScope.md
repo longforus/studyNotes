@@ -24,12 +24,11 @@ WillPopScope:
   final WillPopCallback? onWillPop;
   
   typedef WillPopCallback = Future<bool> Function();
-  
 ```
 
 本来是接收一个返回Future<bool> 的callback的,方便我们在里面进行一些异步的操作判断当前是否需要pop,用起来是非常方便的.但是PopScope的改成了:
 
-```dart
+ ```dart
   /// {@template flutter.widgets.PopScope.canPop}
   /// When false, blocks the current route from being popped.
   ///
@@ -65,7 +64,6 @@ WillPopScope:
   ///  * [Route.onPopInvoked], which is similar.
   final PopInvokedCallback? onPopInvoked;
 
-
 typedef PopInvokedCallback = void Function(bool didPop);
 ```
 
@@ -78,7 +76,7 @@ typedef PopInvokedCallback = void Function(bool didPop);
  	},
  	child:child
  	};
- 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 	-------------------------------------------------------
  	 return PopScope(
       canPop: false,
       onPopInvoked: (didPop) async {
@@ -91,7 +89,6 @@ typedef PopInvokedCallback = void Function(bool didPop);
       },
       child:child
  	};
- 	
 ```
 
 麻烦了不少.
